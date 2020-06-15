@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D1CECE"
+    tools:context="eslam.emad.bloodbank.ui.fragments.DonationRequestFragment">
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:id="@+id/fragment_donation_app_bar">
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="?actionBarSize"
+            android:padding="@dimen/appbar_padding"
+            android:text="Donation requests"
+            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/fragment_donation_swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/fragment_donation_app_bar"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/relative_layout_for_right_spinner"
+                    android:layout_width="@dimen/_135sdp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/rectangle">
+
+                    <ImageView
+                        android:id="@+id/img1"
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="12dp"
+                        android:src="@drawable/blood_drop" />
+
+                    <Spinner
+                        android:id="@+id/fragment_donation_blood_type_spinner"
+                        style="@style/SpinnerwithNoArrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_toStartOf="@+id/img1"
+                        android:layout_toEndOf="@id/img3"
+                        android:background="@drawable/rectangle"
+                        android:entries="@array/BloodTypes"
+                        android:gravity="end"
+                        android:spinnerMode="dialog" />
+
+
+                    <ImageView
+                        android:id="@+id/img3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:src="@drawable/drop_down" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relative_layout_for_left_spinner"
+                    android:layout_width="@dimen/_135sdp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/rectangle">
+
+                    <ImageView
+                        android:id="@+id/img2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:layout_marginBottom="12dp"
+                        android:src="@drawable/ic_home_black_24dp" />
+
+                    <Spinner
+                        android:id="@+id/fragment_donation_governate_spinner"
+                        style="@style/SpinnerwithNoArrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/img2"
+                        android:background="@drawable/rectangle"
+                        android:entries="@array/BloodTypes"
+                        android:gravity="end"
+                        android:spinnerMode="dialog" />
+
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
+                        android:src="@drawable/drop_down" />
+
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/fragment_donation_search_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_below="@id/relative_layout_for_left_spinner"
+                    android:layout_margin="12dp"
+                    android:background="@drawable/rectangle"
+                    android:drawableStart="@drawable/ic_search_black_24dp"
+                    android:paddingStart="8dp"
+                    android:text="Search"
+                    android:textColor="@color/colorPrimary" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fragment_donation_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/fragment_donation_search_btn"
+                    android:fastScrollEnabled="true"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollbars="vertical"
+                    android:splitMotionEvents="false"
+                    android:verticalScrollbarPosition="right" />
+            </RelativeLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <ImageView
+        android:id="@+id/donation_fragment_button_add_post"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_add_circle_red" />
+</RelativeLayout>

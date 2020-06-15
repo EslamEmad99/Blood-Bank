@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <CheckBox
+        android:id="@+id/example_check_box_checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/remember_me"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:buttonTint="@color/colorPrimary"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
+        tools:ignore="UnusedAttribute" />
+</LinearLayout>

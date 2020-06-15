@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "946836604477",
+    "firebase_url": "https://blood-bank-64cb1.firebaseio.com",
+    "project_id": "blood-bank-64cb1",
+    "storage_bucket": "blood-bank-64cb1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:946836604477:android:dc93394f15b3b71755cc54",
+        "android_client_info": {
+          "package_name": "eslam.emad.bloodbank"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "946836604477-6alp607a95c1kso92tsmp54g6408feo0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eslam.emad.bloodbank",
+            "certificate_hash": "c9f7f8924751eb2545995f5d3102fb7e4a03e1c3"
+          }
+        },
+        {
+          "client_id": "946836604477-nceqa39dh0uuids4smm3lfujqmtb9v5o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAH79cVWqKS_NraGCjuDGuCdZS0l5hfGJg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "946836604477-nceqa39dh0uuids4smm3lfujqmtb9v5o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

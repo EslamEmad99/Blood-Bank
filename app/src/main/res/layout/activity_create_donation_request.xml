@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    tools:context="eslam.emad.bloodbank.ui.activities.CreateDonationRequestActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <EditText
+                android:id="@+id/donation_activity_name_edit_text"
+                style="@style/registerFragmentStyle"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:drawableEnd="@drawable/ic_person_black_24dp"
+                android:hint="@string/name"
+                android:inputType="textPersonName"
+                android:maxLines="1" />
+
+            <EditText
+                android:id="@+id/donation_activity_birth_edit_text"
+                style="@style/registerFragmentStyle"
+                android:drawableEnd="@drawable/calendar"
+                android:hint="@string/age"
+                android:inputType="number"
+                android:maxLines="1" />
+
+            <RelativeLayout
+                android:id="@+id/relative_one"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/rectangle">
+
+                <ImageView
+                    android:id="@+id/img1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginBottom="12dp"
+                    android:src="@drawable/blood_drop" />
+
+                <Spinner
+                    android:id="@+id/donation_activity_blood_type_spinner"
+                    style="@style/SpinnerwithNoArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/img1"
+                    android:background="@drawable/rectangle"
+                    android:entries="@array/BloodTypes"
+                    android:gravity="end"
+                    android:spinnerMode="dialog" />
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:src="@drawable/drop_down" />
+
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/donation_activity_bags_edit_text"
+                style="@style/registerFragmentStyle"
+                android:drawableEnd="@drawable/ic_mail"
+                android:ems="10"
+                android:hint="عدد الاكياس"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/donation_activity_hospital_name_edit_text"
+                style="@style/registerFragmentStyle"
+                android:drawableEnd="@drawable/ic_home_black_24dp"
+                android:hint="@string/hospital_name"
+                android:inputType="text"
+                android:maxLines="3" />
+
+            <TextView
+                android:id="@+id/donation_activity_address_text_view"
+                style="@style/registerFragmentStyle"
+                android:drawableEnd="@drawable/ic_home_black_24dp"
+                android:hint="@string/hospital_address" />
+
+            <RelativeLayout
+                android:id="@+id/relative_two"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/rectangle">
+
+                <ImageView
+                    android:id="@+id/img2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="@dimen/_16sdp"
+                    android:layout_marginBottom="12dp"
+                    android:src="@drawable/ic_home_black_24dp" />
+
+                <Spinner
+                    android:id="@+id/donation_activity_governarate_spinner"
+                    style="@style/SpinnerwithNoArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_16sdp"
+                    android:layout_toStartOf="@+id/img2"
+                    android:background="@drawable/rectangle"
+                    android:entries="@array/BloodTypes"
+                    android:gravity="end"
+                    android:spinnerMode="dialog" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:src="@drawable/drop_down" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relative_three"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/rectangle">
+
+                <ImageView
+                    android:id="@+id/img3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="@dimen/_16sdp"
+                    android:layout_marginBottom="12dp"
+                    android:src="@drawable/ic_home_black_24dp" />
+
+                <Spinner
+                    android:id="@+id/donation_activity_city_spinner"
+                    style="@style/SpinnerwithNoArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/_16sdp"
+                    android:layout_toStartOf="@+id/img3"
+                    android:background="@drawable/rectangle"
+                    android:entries="@array/BloodTypes"
+                    android:gravity="end"
+                    android:spinnerMode="dialog" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_8sdp"
+                    android:src="@drawable/drop_down" />
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/donation_activity_phone_number_edit_text"
+                style="@style/registerFragmentStyle"
+                android:drawableEnd="@drawable/ic_phone"
+                android:hint="@string/phone"
+                android:inputType="phone" />
+
+            <EditText
+                android:id="@+id/donation_activity_notes_edit_text"
+                style="@style/registerFragmentStyle"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_password"
+                android:gravity="start"
+                android:hint="ملاحظات"
+                android:inputType="textMultiLine"
+                android:scrollbars="vertical" />
+
+            <Button
+                android:id="@+id/donation_activity_enter_btn"
+                style="@style/buttonStyle2"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="18dp"
+                android:text="@string/send" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

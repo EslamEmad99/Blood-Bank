@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="eslam.emad.bloodbank.ui.fragments.MoreScreen">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <TextView
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="?actionBarSize"
+            android:padding="@dimen/appbar_padding"
+            android:text="المزيد"
+            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/fragment_more_screen_profile_tv"
+                style="@style/MoreFragmentTextViewStyle"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:drawableEnd="@drawable/ic_person_black_24dp"
+                android:text="@string/profile" />
+
+            <View style="@style/LineStyle" />
+
+            <TextView
+                android:id="@+id/fragment_more_screen_contact_us_tv"
+                style="@style/MoreFragmentTextViewStyle"
+                android:drawableEnd="@drawable/ic_mail"
+                android:text="@string/contact_us" />
+
+            <View style="@style/LineStyle" />
+
+            <TextView
+                android:id="@+id/fragment_more_screen_about_us_tv"
+                style="@style/MoreFragmentTextViewStyle"
+                android:drawableEnd="@drawable/ic_lightbulbsvg"
+                android:text="@string/about" />
+
+            <View style="@style/LineStyle" />
+
+            <TextView
+                android:id="@+id/fragment_more_screen_rate_us_tv"
+                style="@style/MoreFragmentTextViewStyle"
+                android:drawableEnd="@drawable/ic_star_checked"
+                android:text="@string/rate_us" />
+
+            <View style="@style/LineStyle" />
+
+            <TextView
+                android:id="@+id/fragment_more_screen__settings_tv"
+                style="@style/MoreFragmentTextViewStyle"
+                android:drawableEnd="@drawable/ic_settings_black_24dp"
+                android:text="@string/settings" />
+
+            <View style="@style/LineStyle" />
+
+            <TextView
+                android:id="@+id/fragment_more_screen_log_out_tv"
+                style="@style/MoreFragmentTextViewStyle"
+                android:drawableEnd="@drawable/ic_arrow_forward"
+                android:text="@string/log_out" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

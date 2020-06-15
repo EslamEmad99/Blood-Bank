@@ -1,0 +1,103 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppThemeWithActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="SplashScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen_background</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppThemeNoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="registerFragmentStyle">
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:drawablePadding">@dimen/_16sdp</item>
+        <item name="android:textCursorDrawable">@drawable/black_cursor</item>
+        <item name="android:background">@drawable/rectangle</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:padding">16dp</item>"
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
+    </style>
+
+    <style name="buttonStyle">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/custom_button</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
+
+    <style name="buttonStyle2">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/red_btn</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="orangeButton">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/orange_btn</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style parent="@android:style/Widget.Spinner" name="SpinnerwithNoArrow">
+        <item name="android:background">@android:drawable/edit_text</item>
+    </style>
+
+    <style name="MoreFragmentTextViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/_26sdp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:drawablePadding">@dimen/_8sdp</item>
+        <item name="android:padding">@dimen/_8sdp</item>
+        <item name="android:gravity">right</item>
+    </style>
+
+    <style name="LineStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_marginStart">@dimen/_12sdp</item>
+        <item name="android:layout_marginEnd">@dimen/_12sdp</item>
+        <item name="android:background">@color/colorPrimaryDark</item>
+    </style>
+
+</resources>

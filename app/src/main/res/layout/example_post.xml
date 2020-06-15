@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_250sdp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    app:cardCornerRadius="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/post_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/onboarding_baclground_one"
+            android:scaleType="fitXY"/>
+
+        <ImageView
+            android:id="@+id/favorite_t_btn"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:textOn=""
+            android:textOff=""
+            android:background="@drawable/ic_star_not_checked" />
+
+        <TextView
+            android:id="@+id/post_description"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/transparent_tv"
+            android:gravity="center"
+            android:text="text"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

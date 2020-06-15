@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background"
+    tools:context="eslam.emad.bloodbank.ui.fragments.RegisterFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/fragment_register_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="30dp"
+            android:text="@string/new_account"
+            android:textColor="@color/colorAccent"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/fragment_register_name_edit_text"
+            style="@style/registerFragmentStyle"
+            android:layout_below="@id/fragment_register_textView"
+            android:drawableEnd="@drawable/ic_person_black_24dp"
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:hint="@string/name" />
+
+        <EditText
+            android:id="@+id/fragment_register_email_edit_text"
+            style="@style/registerFragmentStyle"
+            android:layout_below="@id/fragment_register_name_edit_text"
+            android:drawableEnd="@drawable/ic_mail"
+            android:ems="10"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress" />
+
+        <TextView
+            android:id="@+id/fragment_register_birth_edit_text"
+            style="@style/registerFragmentStyle"
+            android:layout_below="@id/fragment_register_email_edit_text"
+            android:drawableEnd="@drawable/calendar"
+            android:text="@string/birthday" />
+
+        <RelativeLayout
+            android:id="@+id/relative_one"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/fragment_register_birth_edit_text"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rectangle">
+
+            <ImageView
+                android:id="@+id/img1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:src="@drawable/blood_drop"
+                android:layout_marginEnd="@dimen/_5sdp"/>
+
+            <Spinner
+                android:id="@+id/fragment_register_blood_type_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/img1"
+                android:entries="@array/BloodTypes"
+                android:spinnerMode="dialog"
+                android:gravity="end"
+                style="@style/SpinnerwithNoArrow"
+                android:background="@drawable/rectangle" />
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:src="@drawable/drop_down"
+                android:layout_marginStart="@dimen/_12sdp"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/fragment_register_last_donation_edit_text"
+            style="@style/registerFragmentStyle"
+            android:layout_below="@id/relative_one"
+            android:drawableEnd="@drawable/calendar"
+            android:hint="@string/last_donation_date"/>
+
+        <RelativeLayout
+            android:id="@+id/relative_two"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_below="@id/fragment_register_last_donation_edit_text"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/rectangle">
+
+            <ImageView
+                android:id="@+id/img2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:src="@drawable/ic_home_black_24dp"
+                android:layout_marginEnd="@dimen/_16sdp"/>
+
+            <Spinner
+                android:id="@+id/fragment_register_goernarate_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/img2"
+                android:entries="@array/BloodTypes"
+                android:spinnerMode="dialog"
+                android:gravity="end"
+                android:layout_marginEnd="@dimen/_16sdp"
+                style="@style/SpinnerwithNoArrow"
+                android:background="@drawable/rectangle" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:src="@drawable/drop_down"
+                android:layout_marginStart="@dimen/_12sdp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relative_three"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_below="@id/relative_two"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/rectangle">
+
+            <ImageView
+                android:id="@+id/img3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:src="@drawable/ic_home_black_24dp"
+                android:layout_marginEnd="@dimen/_16sdp"/>
+
+            <Spinner
+                android:id="@+id/fragment_register_city_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/img3"
+                android:entries="@array/BloodTypes"
+                android:spinnerMode="dialog"
+                android:gravity="end"
+                android:layout_marginEnd="@dimen/_16sdp"
+                style="@style/SpinnerwithNoArrow"
+                android:background="@drawable/rectangle"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:src="@drawable/drop_down"
+                android:layout_marginStart="@dimen/_12sdp"/>
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/fragment_register_phone_number_edit_text"
+            style="@style/registerFragmentStyle"
+            android:layout_below="@id/relative_three"
+            android:drawableEnd="@drawable/ic_phone"
+            android:inputType="phone"
+            android:hint="@string/phone"
+            android:textAlignment="viewEnd"/>
+
+        <EditText
+            android:id="@+id/fragment_register_password_edit_text"
+            style="@style/registerFragmentStyle"
+            android:layout_below="@id/fragment_register_phone_number_edit_text"
+            android:drawableEnd="@drawable/ic_password"
+            android:hint="@string/password"
+            android:gravity="end"
+            android:inputType="textPassword"  />
+
+        <EditText
+            android:id="@+id/fragment_register_password_again_edit_text"
+            style="@style/registerFragmentStyle"
+            android:layout_below="@id/fragment_register_password_edit_text"
+            android:drawableEnd="@drawable/ic_password"
+            android:hint="@string/new_password_again"
+            android:gravity="end"
+            android:inputType="textPassword"/>
+
+        <Button
+            android:id="@+id/fragment_register_enter_btn"
+            android:text="@string/register"
+            android:layout_marginTop="18dp"
+            android:layout_below="@id/fragment_register_password_again_edit_text"
+            android:layout_marginBottom="30dp"
+            style="@style/buttonStyle" />
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

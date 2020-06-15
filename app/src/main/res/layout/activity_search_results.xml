@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="eslam.emad.bloodbank.ui.activities.SearchResultsActivity">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/search_posts_activity_swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_posts_activity_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <ImageView
+        android:id="@+id/search_posts_activity_imgv"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_150sdp"
+        android:src="@drawable/ic_broken_heart"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_36sdp" />
+
+    <TextView
+        android:id="@+id/search_posts_activity_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/_16sdp"
+        android:layout_below="@id/search_posts_activity_imgv"
+        android:lineHeight="@dimen/_32sdp"
+        android:text="لا يوجد أي مقالات مشابهة \n جرب كلمات بحثية اخري"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/_20sdp"
+        android:textStyle="bold" />
+</RelativeLayout>

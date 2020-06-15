@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_more"
+        android:icon="@drawable/horizontal_three_dots"
+        android:title="@string/more" />
+
+    <item
+        android:id="@+id/nav_notificatio"
+        android:icon="@drawable/ic_notification"
+        android:title="@string/notification" />
+
+    <item
+        android:id="@+id/nav_donation_request"
+        android:icon="@drawable/blood_drop"
+        android:title="@string/profile" />
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/home" />
+
+</menu>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SplashScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen_background</item>
+        <item name="colorPrimaryDark">@color/colorPrimarydark</item>
+        <item name="android:navigationBarColor">@color/colorPrimarydark</item>
+    </style>
+
+    <style parent="@android:style/Widget.Spinner" name="SpinnerwithNoArrow">
+        <item name="android:background">@android:drawable/edit_text</item>
+    </style>
+</resources>

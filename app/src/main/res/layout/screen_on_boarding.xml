@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/screen_on_boarding_imgv"
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/onboarding_baclground_one" />
+
+
+    <TextView
+        android:id="@+id/screen_on_boarding_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/screen_on_boarding_imgv"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:text="@string/lorem_ipsum"
+        android:textColor="#000"
+        android:textSize="18sp" />
+</RelativeLayout>

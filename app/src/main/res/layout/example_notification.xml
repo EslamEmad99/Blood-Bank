@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    app:cardCornerRadius="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/_16sdp"
+        android:paddingBottom="@dimen/_16sdp">
+
+        <TextView
+            android:id="@+id/example_notification_date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10/10/2020 monday"
+            android:textSize="@dimen/_8ssp"
+            android:textColor="@color/colorPrimary"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_8sdp"/>
+
+        <TextView
+            android:id="@+id/example_notification_text_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/example_notification_alarm_img"
+            android:text="Notification text"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/example_notification_alarm_img"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:src="@drawable/ic_notification"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_8sdp"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

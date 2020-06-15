@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background"
+    tools:context="eslam.emad.bloodbank.ui.fragments.LoginFragment">
+
+    <ImageView
+        android:id="@+id/fragment_login_img_view"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/white_blood" />
+
+    <EditText
+        android:id="@+id/fragment_login_phone_number_edit_text"
+        style="@style/registerFragmentStyle"
+        android:layout_below="@id/fragment_login_img_view"
+        android:drawableEnd="@drawable/ic_phone"
+        android:gravity="end"
+        android:hint="@string/phone"
+        android:inputType="phone" />
+
+    <EditText
+        android:id="@+id/fragment_login_password_edit_text"
+        style="@style/registerFragmentStyle"
+        android:layout_below="@id/fragment_login_phone_number_edit_text"
+        android:drawableEnd="@drawable/ic_password"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:gravity="end" />
+
+    <CheckBox
+        android:id="@+id/fragment_login_remember_me_checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_login_enter_btn"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:buttonTint="#fff"
+        android:text="@string/remember_me"
+        android:textColor="#fff"
+        android:textSize="20sp"
+        tools:ignore="UnusedAttribute" />
+
+    <TextView
+        android:id="@+id/fragment_login_forget_password_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_login_enter_btn"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:text="@string/do_you_forget_password"
+        android:textColor="#fff"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/fragment_login_enter_btn"
+        style="@style/buttonStyle"
+        android:layout_below="@id/fragment_login_password_edit_text"
+        android:layout_marginTop="24dp"
+        android:text="@string/enter" />
+
+    <TextView
+        android:id="@+id/fragment_login_not_registered_tv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center"
+        android:text="@string/not_registerd_yet"
+        android:textColor="@color/colorPrimary"
+        android:textSize="22sp" />
+</RelativeLayout>

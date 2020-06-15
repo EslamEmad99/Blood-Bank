@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">BloodBank</string>
+    <string name="lorem_ipsum">consectetur adipiscing . Duis aute irure  sunt in culpa qui officia deserunt mollit anim id est laborum Duis aute irure  sunt in culpa qui officia deserunt mollit anim id est laborum</string>
+    <string name="more">More</string>
+    <string name="notification">Notification</string>
+    <string name="profile">Profile</string>
+    <string name="home">Home</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="enter">Enter</string>
+    <string name="do_you_forget_password">Forget Password</string>
+    <string name="remember_me">Remember me</string>
+    <string name="phone">phone</string>
+    <string name="skip">Skip</string>
+    <string name="get_started">Get Started</string>
+    <string name="next">Next</string>
+    <string name="new_password_again">New Password</string>
+    <string name="new_password">New Password</string>
+    <string name="check_code">Check code</string>
+    <string name="birthday">Birthday</string>
+    <string name="last_donation_date">Last Donation Date</string>
+    <string name="name">Name</string>
+    <string name="email">E-mail</string>
+    <string name="modify">Modify</string>
+
+    <string-array name="BloodTypes">
+        <item>فصيلة الدم</item>
+        <item>فصيلة 1</item>
+        <item>فصيلة 2</item>
+        <item>فصيلة 3</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_map">Map</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="favorite">Favorite</string>
+    <string name="about">About Us</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="settings">Settings</string>
+    <string name="log_out">Log Out</string>
+    <string name="password">password</string>
+    <string name="modify_data">Modify Data</string>
+    <string name="send">Send</string>
+    <string name="register">Register</string>
+    <string name="not_registerd_yet">Register here</string>
+    <string name="new_account">New account</string>
+    <string name="change">Change</string>
+    <string name="notification_txt">No notification now \n start helping the humanity</string>
+    <string name="about_us_text">تطبيق بنك الدم يهدف إلى تسهيل عملية التبرع بالدم والوصول إلى المتبرعين بسهولة كبيرة ، يحرص التطبيق على الحفاظ على خصوصية بيانات المتبرعين وحمايتهم من الازعاج .</string>
+    <string name="search_result">Search Results</string>
+    <string name="age">Age</string>
+    <string name="hospital_name">Hospital Name</string>
+    <string name="hospital_address">عنوان المستشفي</string>
+</resources>
