@@ -73,5 +73,4 @@
         android:scrollbars="vertical"
         android:splitMotionEvents="false"
         android:verticalScrollbarPosition="right" />
-
 </RelativeLayout>

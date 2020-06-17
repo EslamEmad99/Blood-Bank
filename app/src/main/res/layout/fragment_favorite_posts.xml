@@ -5,17 +5,6 @@
     android:layout_height="match_parent"
     tools:context="eslam.emad.bloodbank.ui.fragments.FavoritePostsFragment">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/favorite_posts_fragment_swipe_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/favorite_posts_fragment_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
     <ImageView
         android:id="@+id/favorite_posts_fragment_imgv"
         android:layout_width="@dimen/_150sdp"
@@ -33,11 +22,21 @@
         android:layout_marginBottom="@dimen/_16sdp"
         android:layout_below="@id/favorite_posts_fragment_imgv"
         android:lineHeight="@dimen/_32sdp"
-        android:text="لم تعجب بأي مقال حتي الآن \n إضغط علامة النجمة للمقالات المميزة"
+        android:text="@string/no_items_favorite_fragment"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_20sdp"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/favorite_posts_fragment_swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/favorite_posts_fragment_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

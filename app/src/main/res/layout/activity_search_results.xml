@@ -6,17 +6,6 @@
     android:layout_height="match_parent"
     tools:context="eslam.emad.bloodbank.ui.activities.SearchResultsActivity">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/search_posts_activity_swipe_refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/search_posts_activity_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
     <ImageView
         android:id="@+id/search_posts_activity_imgv"
         android:layout_width="@dimen/_150sdp"
@@ -39,4 +28,15 @@
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_20sdp"
         android:textStyle="bold" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/search_posts_activity_swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_posts_activity_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </RelativeLayout>

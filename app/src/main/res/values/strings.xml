@@ -52,4 +52,5 @@
     <string name="age">Age</string>
     <string name="hospital_name">Hospital Name</string>
     <string name="hospital_address">عنوان المستشفي</string>
+    <string name="no_items_favorite_fragment">لم تعجب بأي مقال حتي الآن \n إضغط علامة النجمة للمقالات المميزة</string>
 </resources>
