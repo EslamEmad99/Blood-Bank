@@ -52,6 +52,24 @@ public class SearchResultsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.search_result));
 
+        ApiClient.getINSTANCE()
+                .getAllSearchPosts(Constants.API_TOKEN, 0, getIntent().getStringExtra("search"), "")
+                .enqueue(new Callback<PostModel>() {
+                    @Override
+                    public void onResponse(Call<PostModel> call, Response<PostModel> response) {
+                        if (response.body().getPostsResponseData().getPostData().size() == 0) {
+                            mRecyclerView.setVisibility(View.GONE);
+                            searchPostsActivityImgv.setVisibility(View.VISIBLE);
+                            searchPostsActivityTv.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<PostModel> call, Throwable t) {
+
+                    }
+                });
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
 
@@ -63,25 +81,6 @@ public class SearchResultsActivity extends AppCompatActivity {
             public void onChanged(PagedList<PostData> postData) {
                 mAdapter.submitList(postData);
                 mSwipeRefreshLayout.setRefreshing(false);
-
-                postData.addWeakCallback(null, new PagedList.Callback() {
-                    @Override
-                    public void onChanged(int position, int count) {
-
-                    }
-
-                    @Override
-                    public void onInserted(int position, int count) {
-                        searchPostsActivityImgv.setVisibility(View.GONE);
-                        searchPostsActivityTv.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onRemoved(int position, int count) {
-
-                    }
-                });
-
             }
         });
 
@@ -101,7 +100,6 @@ public class SearchResultsActivity extends AppCompatActivity {
             public void onFavoriteClick(PostData postData, boolean isChecked) {
                 postData.setIsFavourite(!isChecked);
                 mAdapter.notifyDataSetChanged();
-                Toast.makeText(SearchResultsActivity.this, "Toast " + isChecked, Toast.LENGTH_LONG).show();
                 ApiClient.getINSTANCE()
                         .setFavoritePost(postData.getId(), Constants.API_TOKEN)
                         .enqueue(new Callback<SetGetFavoritePostsModel>() {

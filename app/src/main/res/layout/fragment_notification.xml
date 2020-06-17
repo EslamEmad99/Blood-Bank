@@ -40,7 +40,8 @@
         android:layout_below="@id/fragment_settings_app_bar"
         android:paddingEnd="@dimen/_36sdp"
         android:layout_marginBottom="@dimen/_16sdp"
-        android:layout_marginTop="@dimen/_36sdp" />
+        android:layout_marginTop="@dimen/_36sdp"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/fragment_notification_tv"
@@ -54,14 +55,16 @@
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_20sdp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/fragment_notification_btn"
         style="@style/orangeButton"
         android:layout_below="@id/fragment_notification_tv"
         android:layout_centerHorizontal="true"
-        android:text="@string/modify" />
+        android:text="@string/modify"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_notification_recycler_view"

@@ -18,28 +18,56 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.emad.bloodbank.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import eslam.emad.bloodbank.adapters.NotificationsAdapter;
+import eslam.emad.bloodbank.data.Constants;
+import eslam.emad.bloodbank.data.api.ApiClient;
 import eslam.emad.bloodbank.data.models.notification.NotificationData;
+import eslam.emad.bloodbank.data.models.notification.NotificationModel;
 import eslam.emad.bloodbank.ui.viewModels.NotificationViewModel;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NotificationFragment extends Fragment {
 
     View view;
+    @BindView(R.id.fragment_notification_imgv)
+    ImageView imageView;
+    @BindView(R.id.fragment_notification_tv)
+    TextView textView;
+    @BindView(R.id.fragment_notification_btn)
+    Button button;
+    @BindView(R.id.fragment_notification_recycler_view)
+    RecyclerView mRecyclerView;
     private NotificationsAdapter mAdapter;
     private NotificationViewModel notificationViewModel;
-    ImageView imageView;
-    TextView textView;
-    Button button;
-    RecyclerView mRecyclerView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_notification, container, false);
+        ButterKnife.bind(this,view);
 
-        imageView = view.findViewById(R.id.fragment_notification_imgv);
-        textView = view.findViewById(R.id.fragment_notification_tv);
-        button = view.findViewById(R.id.fragment_notification_btn);
-        mRecyclerView = view.findViewById(R.id.fragment_notification_recycler_view);
+        ApiClient.getINSTANCE()
+                .getNotifications(Constants.API_TOKEN, 0)
+                .enqueue(new Callback<NotificationModel>() {
+                    @Override
+                    public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
+                        if (response.body().getNotificationResponseData().getData().size() == 0) {
+                            mRecyclerView.setVisibility(View.GONE);
+                            imageView.setVisibility(View.VISIBLE);
+                            textView.setVisibility(View.VISIBLE);
+                            button.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<NotificationModel> call, Throwable t) {
+
+                    }
+                });
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
@@ -50,24 +78,6 @@ public class NotificationFragment extends Fragment {
             @Override
             public void onChanged(PagedList<NotificationData> notificationData) {
                 mAdapter.submitList(notificationData);
-                notificationData.addWeakCallback(null, new PagedList.Callback() {
-                    @Override
-                    public void onChanged(int position, int count) {
-
-                    }
-
-                    @Override
-                    public void onInserted(int position, int count) {
-                        imageView.setVisibility(View.GONE);
-                        textView.setVisibility(View.GONE);
-                        button.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onRemoved(int position, int count) {
-
-                    }
-                });
             }
         });
 

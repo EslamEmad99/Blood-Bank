@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 import eslam.emad.bloodbank.adapters.ArticlesAdapter;
 import eslam.emad.bloodbank.data.Constants;
 import eslam.emad.bloodbank.data.api.ApiClient;
+import eslam.emad.bloodbank.data.models.favoritePosts.FavoritePostsModel;
 import eslam.emad.bloodbank.data.models.posts.PostData;
 import eslam.emad.bloodbank.data.models.setGetFavoritePosts.SetGetFavoritePostsModel;
 import eslam.emad.bloodbank.ui.activities.PostAndDonationInformationActivity;
@@ -51,6 +52,24 @@ public class FavoritePostsFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_favorite_posts, container, false);
         ButterKnife.bind(this, view);
 
+        ApiClient.getINSTANCE()
+                .getAllFavoritePosts(Constants.API_TOKEN, 0)
+                .enqueue(new Callback<FavoritePostsModel>() {
+                    @Override
+                    public void onResponse(Call<FavoritePostsModel> call, Response<FavoritePostsModel> response) {
+                        if (response.body().getFavoritePostsResponseData().getData().size() == 0) {
+                            mRecyclerView.setVisibility(View.GONE);
+                            favoritePostsFragmentImgv.setVisibility(View.VISIBLE);
+                            favoritePostsFragmentTv.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<FavoritePostsModel> call, Throwable t) {
+
+                    }
+                });
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
 
@@ -62,24 +81,6 @@ public class FavoritePostsFragment extends Fragment {
             public void onChanged(PagedList<PostData> favoritePostsData) {
                 mAdapter.submitList(favoritePostsData);
                 mSwipeRefreshLayout.setRefreshing(false);
-
-                favoritePostsData.addWeakCallback(null, new PagedList.Callback() {
-                    @Override
-                    public void onChanged(int position, int count) {
-
-                    }
-
-                    @Override
-                    public void onInserted(int position, int count) {
-                        favoritePostsFragmentImgv.setVisibility(View.GONE);
-                        favoritePostsFragmentTv.setVisibility(View.GONE);
-                    }
-
-                    @Override
-                    public void onRemoved(int position, int count) {
-
-                    }
-                });
             }
         });
 
@@ -99,7 +100,6 @@ public class FavoritePostsFragment extends Fragment {
             public void onFavoriteClick(PostData postData, boolean isChecked) {
                 postData.setIsFavourite(!isChecked);
                 mAdapter.notifyDataSetChanged();
-                Toast.makeText(getContext(), "Toast " + isChecked, Toast.LENGTH_LONG).show();
                 ApiClient.getINSTANCE()
                         .setFavoritePost(postData.getId(), Constants.API_TOKEN)
                         .enqueue(new Callback<SetGetFavoritePostsModel>() {

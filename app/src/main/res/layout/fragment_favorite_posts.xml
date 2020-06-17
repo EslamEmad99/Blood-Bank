@@ -12,7 +12,8 @@
         android:src="@drawable/ic_star_checked"
         android:layout_centerInParent="true"
         android:layout_marginBottom="@dimen/_16sdp"
-        android:layout_marginTop="@dimen/_36sdp" />
+        android:layout_marginTop="@dimen/_36sdp"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/favorite_posts_fragment_tv"
@@ -26,7 +27,8 @@
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_20sdp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="gone"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/favorite_posts_fragment_swipe_refresh"

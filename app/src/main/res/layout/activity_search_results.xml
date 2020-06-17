@@ -13,7 +13,8 @@
         android:src="@drawable/ic_broken_heart"
         android:layout_centerInParent="true"
         android:layout_marginBottom="@dimen/_16sdp"
-        android:layout_marginTop="@dimen/_36sdp" />
+        android:layout_marginTop="@dimen/_36sdp"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/search_posts_activity_tv"
@@ -27,7 +28,8 @@
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/_20sdp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="gone"/>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/search_posts_activity_swipe_refresh"
