@@ -13,6 +13,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import eslam.emad.bloodbank.data.Constants;
 import eslam.emad.bloodbank.data.MyApplication;
+import eslam.emad.bloodbank.ui.activities.HomeActivity;
 
 public class FirebaseService extends FirebaseMessagingService {
 
@@ -20,7 +21,7 @@ public class FirebaseService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(String token) {
-        //createNotification("Token", token);
+        //save the new token to shared preferences
     }
 
     @Override

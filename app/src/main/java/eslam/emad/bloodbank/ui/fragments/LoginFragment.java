@@ -88,6 +88,7 @@ public class LoginFragment extends Fragment {
                     if (response.body().getStatus() == 1) {
                         SharedPreferencesManger.getINSTANCE(getContext()).saveBooleanValue("is_remembered", isChecked);
                         SharedPreferencesManger.getINSTANCE(getContext()).saveStringValue("api_key", response.body().getLoginData().getApiToken());
+                        //register notification token
                         goToHomeActivity();
                     }
                     Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();

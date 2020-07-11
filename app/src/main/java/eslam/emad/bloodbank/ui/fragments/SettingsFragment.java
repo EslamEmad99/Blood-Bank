@@ -52,7 +52,7 @@ public class SettingsFragment extends Fragment {
             public void onResponse(Call<BloodTypeModel> call, Response<BloodTypeModel> response) {
                 if (response.body().getStatus() == 1) {
                     for (int i = 0; i < response.body().getData().size(); i++) {
-                        bloodTypeCheckBoxArrayList.add(new ExampleCheckBox(response.body().getData().get(i).getName()));
+                        bloodTypeCheckBoxArrayList.add(new ExampleCheckBox(response.body().getData().get(i).getName(), response.body().getData().get(i).getId()));
                         checkBoxAdapter.notifyDataSetChanged();
                     }
                 }
@@ -71,12 +71,11 @@ public class SettingsFragment extends Fragment {
 
         checkBoxAdapter.setOnItemClickListener(new CheckBoxAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position, boolean isChecked) {
-                String realPosition = String.valueOf(position + 1);
+            public void onItemClick(ExampleCheckBox exampleCheckBox, boolean isChecked) {
                 if (isChecked) {
-                    bloodTypeArray.add(realPosition);
+                    bloodTypeArray.add(String.valueOf(exampleCheckBox.getId()));
                 } else {
-                    bloodTypeArray.remove(realPosition);
+                    bloodTypeArray.remove(String.valueOf(exampleCheckBox.getId()));
                 }
             }
         });
@@ -91,7 +90,7 @@ public class SettingsFragment extends Fragment {
             public void onResponse(Call<GovernateModel> call, Response<GovernateModel> response) {
                 if (response.body().getStatus() == 1) {
                     for (int i = 0; i < response.body().getData().size(); i++) {
-                        goernateCheckBoxArrayList.add(new ExampleCheckBox(response.body().getData().get(i).getName()));
+                        goernateCheckBoxArrayList.add(new ExampleCheckBox(response.body().getData().get(i).getName(), response.body().getData().get(i).getId()));
                         checkBoxAdapter.notifyDataSetChanged();
                     }
                 }
@@ -110,14 +109,11 @@ public class SettingsFragment extends Fragment {
 
         checkBoxAdapter.setOnItemClickListener(new CheckBoxAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(int position, boolean isChecked) {
-                String realPosition = String.valueOf(position + 1);
+            public void onItemClick(ExampleCheckBox exampleCheckBox, boolean isChecked) {
                 if (isChecked) {
-                    governateArray.add(realPosition);
-                    Toast.makeText(getContext(), realPosition + " is Checked", Toast.LENGTH_SHORT).show();
+                    governateArray.add(String.valueOf(exampleCheckBox.getId()));
                 } else {
-                    governateArray.remove(realPosition);
-                    Toast.makeText(getContext(), realPosition + " is not Checked", Toast.LENGTH_SHORT).show();
+                    governateArray.remove(String.valueOf(exampleCheckBox.getId()));
                 }
             }
         });

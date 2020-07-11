@@ -19,18 +19,18 @@ public class CheckBoxAdapter extends RecyclerView.Adapter <CheckBoxAdapter.Check
     private OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(int position, boolean isChecked);
+        void onItemClick(ExampleCheckBox exampleCheckBox, boolean isChecked);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         mListener = listener;
     }
 
-    public static class CheckBoxViewHolder extends RecyclerView.ViewHolder {
+    class CheckBoxViewHolder extends RecyclerView.ViewHolder {
 
         public CheckBox checkBox;
 
-        public CheckBoxViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
+        public CheckBoxViewHolder(@NonNull View itemView, final CheckBoxAdapter.OnItemClickListener listener) {
             super(itemView);
             checkBox = itemView.findViewById(R.id.example_check_box_checkBox);
 
@@ -40,7 +40,7 @@ public class CheckBoxAdapter extends RecyclerView.Adapter <CheckBoxAdapter.Check
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(position,isChecked);
+                            listener.onItemClick(mExampleList.get(position), isChecked);
                         }
                     }
                 }

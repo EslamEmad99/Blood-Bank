@@ -39,4 +39,8 @@
     <string name="new_password">كلمة المرور الجديدة</string>
     <string name="birthday">تاريخ الميلاد</string>
     <string name="notification_txt">لا يوجد اشعارات الآن \n من فضلك ابدأ بإنقاذ البشرية</string>
+    <string name="search_result">نتائج البحث</string>
+    <string name="age">العمر</string>
+    <string name="hospital_name">اسم المستشفي</string>
+    <string name="hospital_address">عنوان المستشفي</string>
 </resources>
