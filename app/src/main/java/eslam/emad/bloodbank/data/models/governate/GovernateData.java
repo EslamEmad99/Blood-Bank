@@ -4,6 +4,8 @@ package eslam.emad.bloodbank.data.models.governate;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.NotNull;
+
 public class GovernateData {
 
     @SerializedName("id")
@@ -18,6 +20,11 @@ public class GovernateData {
     @SerializedName("name")
     @Expose
     private String name;
+
+    public GovernateData(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public Integer getId() {
         return id;
@@ -51,4 +58,9 @@ public class GovernateData {
         this.name = name;
     }
 
+    @NotNull
+    @Override
+    public String toString() {
+        return name;
+    }
 }

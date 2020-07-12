@@ -20,11 +20,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.emad.bloodbank.R;
+
 import eslam.emad.bloodbank.adapters.DonationsAdapter;
 import eslam.emad.bloodbank.data.Constants;
 import eslam.emad.bloodbank.data.api.ApiClient;
+import eslam.emad.bloodbank.data.models.bloodType.BloodTypeData;
 import eslam.emad.bloodbank.data.models.bloodType.BloodTypeModel;
+import eslam.emad.bloodbank.data.models.city.CityData;
 import eslam.emad.bloodbank.data.models.donation.DonationData;
+import eslam.emad.bloodbank.data.models.governate.GovernateData;
 import eslam.emad.bloodbank.data.models.governate.GovernateModel;
 import eslam.emad.bloodbank.ui.activities.CreateDonationRequestActivity;
 import eslam.emad.bloodbank.ui.activities.PostAndDonationInformationActivity;
@@ -52,8 +56,8 @@ public class DonationRequestFragment extends Fragment {
     RecyclerView mRecyclerView;
     @BindView(R.id.fragment_donation_swipe_refresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
-    private ArrayList<String> bloodTypesList;
-    private ArrayList<String> governateList;
+    private ArrayList<BloodTypeData> bloodTypesList;
+    private ArrayList<GovernateData> governateList;
     private String bloodtypeString;
     private String governateString;
     private DonationsAdapter donationsAdapter;
@@ -120,7 +124,11 @@ public class DonationRequestFragment extends Fragment {
         bloodTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                bloodtypeString = String.valueOf(id);
+                if (id != 0) {
+                    bloodtypeString = String.valueOf(((BloodTypeData) parent.getSelectedItem()).getId());
+                } else {
+                    bloodtypeString = String.valueOf(id);
+                }
             }
 
             @Override
@@ -132,7 +140,11 @@ public class DonationRequestFragment extends Fragment {
         governateSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                governateString = String.valueOf(id);
+                if (id != 0) {
+                    governateString = String.valueOf(((GovernateData) parent.getSelectedItem()).getId());
+                } else {
+                    governateString = String.valueOf(id);
+                }
             }
 
             @Override
@@ -144,22 +156,15 @@ public class DonationRequestFragment extends Fragment {
         return view;
     }
 
-    @OnClick(R.id.fragment_donation_search_btn)
-    public void onViewClicked() {
-
-    }
-
     private void setDataInBloodTypeSpinner() {
         bloodTypesList = new ArrayList<>();
-        bloodTypesList.add("فصيلة الدم");
+        bloodTypesList.add(new BloodTypeData(0,"فصيلة الدم"));
         ApiClient.getINSTANCE().getBloodType()
                 .enqueue(new Callback<BloodTypeModel>() {
                     @Override
                     public void onResponse(Call<BloodTypeModel> call, Response<BloodTypeModel> response) {
                         if (response.body().getStatus() == 1) {
-                            for (int i = 0; i < response.body().getData().size(); i++) {
-                                bloodTypesList.add(response.body().getData().get(i).getName());
-                            }
+                            bloodTypesList.addAll(response.body().getData());
                         }
                     }
 
@@ -168,22 +173,20 @@ public class DonationRequestFragment extends Fragment {
 
                     }
                 });
-        ArrayAdapter<String> bloodTypeAdapter = new ArrayAdapter<String>(getContext(), R.layout.custom_spinner_layout, bloodTypesList);
+        ArrayAdapter<BloodTypeData> bloodTypeAdapter = new ArrayAdapter<>(getContext(), R.layout.custom_spinner_layout, bloodTypesList);
         bloodTypeAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         bloodTypeSpinner.setAdapter(bloodTypeAdapter);
     }
 
     private void setDataInGovernateSpinner() {
         governateList = new ArrayList<>();
-        governateList.add("المحافظة");
+        governateList.add(new GovernateData(0, "المحافظة"));
         ApiClient.getINSTANCE().getGovernate()
                 .enqueue(new Callback<GovernateModel>() {
                     @Override
                     public void onResponse(Call<GovernateModel> call, Response<GovernateModel> response) {
                         if (response.body().getStatus() == 1) {
-                            for (int i = 0; i < response.body().getData().size(); i++) {
-                                governateList.add(response.body().getData().get(i).getName());
-                            }
+                            governateList.addAll(response.body().getData());
                         }
                     }
 
@@ -193,7 +196,7 @@ public class DonationRequestFragment extends Fragment {
                     }
                 });
 
-        ArrayAdapter<String> governateAdapter = new ArrayAdapter<String>(getContext(), R.layout.custom_spinner_layout, governateList);
+        ArrayAdapter<GovernateData> governateAdapter = new ArrayAdapter<>(getContext(), R.layout.custom_spinner_layout, governateList);
         governateAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         governateSpinner.setAdapter(governateAdapter);
     }

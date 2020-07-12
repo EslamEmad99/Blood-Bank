@@ -4,6 +4,8 @@ package eslam.emad.bloodbank.data.models.city;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.NotNull;
+
 public class CityData {
 
     @SerializedName("id")
@@ -24,6 +26,11 @@ public class CityData {
     @SerializedName("governorate")
     @Expose
     private Governorate governorate;
+
+    public CityData(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public Integer getId() {
         return id;
@@ -73,4 +80,9 @@ public class CityData {
         this.governorate = governorate;
     }
 
+    @NotNull
+    @Override
+    public String toString() {
+        return name;
+    }
 }

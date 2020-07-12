@@ -31,8 +31,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import eslam.emad.bloodbank.data.Constants;
 import eslam.emad.bloodbank.data.api.ApiClient;
+import eslam.emad.bloodbank.data.models.bloodType.BloodTypeData;
 import eslam.emad.bloodbank.data.models.bloodType.BloodTypeModel;
+import eslam.emad.bloodbank.data.models.city.CityData;
 import eslam.emad.bloodbank.data.models.city.CityModel;
+import eslam.emad.bloodbank.data.models.governate.GovernateData;
 import eslam.emad.bloodbank.data.models.governate.GovernateModel;
 import eslam.emad.bloodbank.data.models.register.RegisterModel;
 import retrofit2.Call;
@@ -64,9 +67,9 @@ public class ProfileFragment extends Fragment {
     EditText passwordAgainEditText;
     @BindView(R.id.fragment_profile_enter_btn)
     Button enterBtn;
-    private ArrayList<String> bloodTypesList;
-    private ArrayList<String> governatesList;
-    private ArrayList<String> citysList;
+    private ArrayList<BloodTypeData> bloodTypesList;
+    private ArrayList<GovernateData> governatesList;
+    private ArrayList<CityData> citysList;
     private Dialog dialog;
     private CalendarView calendarView;
     private String name, email, birthDate, cityId, governateId, phone, donationLastDate, password, passwordConfirmation, bloodTypeId, apiToken;
@@ -81,17 +84,15 @@ public class ProfileFragment extends Fragment {
         bloodTypesList = new ArrayList<>();
         governatesList = new ArrayList<>();
         citysList = new ArrayList<>();
-        bloodTypesList.add("فصيلة الدم");
-        governatesList.add("المحافظة");
-        citysList.add("اختر المحافظة اولا");
+        bloodTypesList.add(new BloodTypeData(0, "فصيلة الدم"));
+        governatesList.add(new GovernateData(0, "المحافظة"));
+        citysList.add(new CityData(0, "اختر المحافظة اولا"));
 
         ApiClient.getINSTANCE().getBloodType().enqueue(new Callback<BloodTypeModel>() {
             @Override
             public void onResponse(Call<BloodTypeModel> call, Response<BloodTypeModel> response) {
                 if (response.body().getStatus() == 1) {
-                    for (int i = 0; i < response.body().getData().size(); i++) {
-                        bloodTypesList.add(response.body().getData().get(i).getName());
-                    }
+                    bloodTypesList.addAll(response.body().getData());
                 }
             }
 
@@ -106,9 +107,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onResponse(Call<GovernateModel> call, Response<GovernateModel> response) {
                 if (response.body().getStatus() == 1) {
-                    for (int i = 0; i < response.body().getData().size(); i++) {
-                        governatesList.add(response.body().getData().get(i).getName());
-                    }
+                    governatesList.addAll(response.body().getData());
                 }
             }
 
@@ -118,15 +117,15 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        final ArrayAdapter<String> bloodTypeAdapter = new ArrayAdapter<String>(getContext(), R.layout.custom_spinner_layout, bloodTypesList);
+        final ArrayAdapter<BloodTypeData> bloodTypeAdapter = new ArrayAdapter<>(getContext(), R.layout.custom_spinner_layout, bloodTypesList);
         bloodTypeAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         bloodTypeSpinner.setAdapter(bloodTypeAdapter);
 
-        final ArrayAdapter<String> governateAdapter = new ArrayAdapter<String>(getContext(), R.layout.custom_spinner_layout, governatesList);
+        final ArrayAdapter<GovernateData> governateAdapter = new ArrayAdapter<>(getContext(), R.layout.custom_spinner_layout, governatesList);
         governateAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         governarateSpinner.setAdapter(governateAdapter);
 
-        final ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(getContext(), R.layout.custom_spinner_layout, citysList);
+        final ArrayAdapter<CityData> cityAdapter = new ArrayAdapter<>(getContext(), R.layout.custom_spinner_layout, citysList);
         cityAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         citySpinner.setAdapter(cityAdapter);
 
@@ -134,7 +133,6 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onResponse(Call<RegisterModel> call, Response<RegisterModel> response) {
                 if (response.body() != null) {
-
                     name = response.body().getRegisterData().getClient().getName();
                     nameEditText.setText(name);
 
@@ -146,27 +144,20 @@ public class ProfileFragment extends Fragment {
                     birthEditText.setText(z);
 
                     bloodTypeId = response.body().getRegisterData().getClient().getBloodTypeId();
-                    if (bloodTypesList.size() > 1) {
-                        bloodTypeSpinner.setSelection(Integer.parseInt(bloodTypeId));
-                    }
 
                     donationLastDate = response.body().getRegisterData().getClient().getDonationLastDate();
                     lastDonationEditText.setText(getResources().getString(R.string.last_donation_date) + " " + donationLastDate);
 
                     governateId = response.body().getRegisterData().getClient().getCity().getGovernorateId();
-                    if (governatesList.size() > 1 && governateId != null) {
-                        governarateSpinner.setSelection(Integer.parseInt(governateId));
-                    }
-                    if (governateId != null){
+
+                    if (governateId != null) {
                         ApiClient.getINSTANCE().getCity(governateId).enqueue(new Callback<CityModel>() {
                             @Override
                             public void onResponse(Call<CityModel> call, Response<CityModel> response) {
                                 if (response.body().getStatus() == 1) {
                                     citysList.clear();
-                                    citysList.add("المدينة");
-                                    for (int i = 0; i < response.body().getData().size(); i++) {
-                                        citysList.add(response.body().getData().get(i).getName());
-                                    }
+                                    citysList.add(new CityData(0,"المدينة"));
+                                    citysList.addAll(response.body().getData());
                                 }
                             }
 
@@ -177,6 +168,8 @@ public class ProfileFragment extends Fragment {
                         });
 
                     }
+
+                    cityId = response.body().getRegisterData().getClient().getCityId();
 
                     phone = response.body().getRegisterData().getClient().getPhone();
                     phoneNumberEditText.setText(phone);
@@ -192,8 +185,8 @@ public class ProfileFragment extends Fragment {
         bloodTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                if (id > 0) {
-                    bloodTypeId = String.valueOf(id);
+                if (id != 0) {
+                    bloodTypeId = String.valueOf(((BloodTypeData) adapterView.getSelectedItem()).getId());
                 }
             }
 
@@ -207,16 +200,14 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 if (id != 0) {
-                    String x = String.valueOf(id);
+                    String x = String.valueOf(((GovernateData) adapterView.getSelectedItem()).getId());
                     ApiClient.getINSTANCE().getCity(x).enqueue(new Callback<CityModel>() {
                         @Override
                         public void onResponse(Call<CityModel> call, Response<CityModel> response) {
                             if (response.body().getStatus() == 1) {
                                 citysList.clear();
-                                citysList.add("المدينة");
-                                for (int i = 0; i < response.body().getData().size(); i++) {
-                                    citysList.add(response.body().getData().get(i).getName());
-                                }
+                                citysList.add(new CityData(0,"المدينة"));
+                                citysList.addAll(response.body().getData());
                                 cityAdapter.notifyDataSetChanged();
                             }
                         }
@@ -239,7 +230,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 if (id != 0) {
-                    cityId = String.valueOf(id);
+                    cityId = String.valueOf(((CityData) adapterView.getSelectedItem()).getId());
                 }
             }
 
@@ -253,8 +244,18 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 int mm = month + 1;
-                String m = String.format("%02d", mm);
-                String d = String.format("%02d", day);
+                String m;
+                String d;
+                if (mm <= 9) {
+                    m = "0" + mm;
+                } else {
+                    m = String.valueOf(mm);
+                }
+                if (day <= 9) {
+                    d = "0" + day;
+                } else {
+                    d = String.valueOf(day);
+                }
                 birthDate = year + "-" + m + "-" + d;
                 String x = " التاريخ : " + birthDate;
                 birthEditText.setText(x);
@@ -337,8 +338,18 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
                 int mm = month + 1;
-                String m = String.format("%02d", mm);
-                String d = String.format("%02d", day);
+                String m;
+                String d;
+                if (mm <= 9) {
+                    m = "0" + mm;
+                } else {
+                    m = String.valueOf(mm);
+                }
+                if (day <= 9) {
+                    d = "0" + day;
+                } else {
+                    d = String.valueOf(day);
+                }
                 donationLastDate = year + "-" + m + "-" + d;
                 String x = " أخر تاريخ تبرع : " + donationLastDate;
                 lastDonationEditText.setText(x);

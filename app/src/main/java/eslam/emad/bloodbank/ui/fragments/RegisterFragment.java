@@ -23,8 +23,11 @@ import androidx.fragment.app.Fragment;
 import com.emad.bloodbank.R;
 
 import eslam.emad.bloodbank.data.api.ApiClient;
+import eslam.emad.bloodbank.data.models.bloodType.BloodTypeData;
 import eslam.emad.bloodbank.data.models.bloodType.BloodTypeModel;
+import eslam.emad.bloodbank.data.models.city.CityData;
 import eslam.emad.bloodbank.data.models.city.CityModel;
+import eslam.emad.bloodbank.data.models.governate.GovernateData;
 import eslam.emad.bloodbank.data.models.governate.GovernateModel;
 import eslam.emad.bloodbank.data.models.register.RegisterModel;
 
@@ -60,9 +63,9 @@ public class RegisterFragment extends Fragment {
     EditText fragmentRegisterPasswordEditText;
     @BindView(R.id.fragment_register_password_again_edit_text)
     EditText fragmentRegisterPasswordAgainEditText;
-    private ArrayList<String> bloodTypesList;
-    private ArrayList<String> governatesList;
-    private ArrayList<String> citysList;
+    private ArrayList<BloodTypeData> bloodTypesList;
+    private ArrayList<GovernateData> governatesList;
+    private ArrayList<CityData> citysList;
     private Dialog dialog;
     private CalendarView calendarView;
     private String name, email, birthDate, cityId, phone, donationLastDate, password, passwordConfirmation, bloodTypeId;
@@ -77,17 +80,15 @@ public class RegisterFragment extends Fragment {
         bloodTypesList = new ArrayList<>();
         governatesList = new ArrayList<>();
         citysList = new ArrayList<>();
-        bloodTypesList.add("فصيلة الدم");
-        governatesList.add("المحافظة");
-        citysList.add("اختر محافظة اولا");
+        bloodTypesList.add(new BloodTypeData(0, "فصيلة الدم"));
+        governatesList.add(new GovernateData(0,"المحافظة"));
+        citysList.add(new CityData(0,"اختر المحافظة اولا"));
 
         ApiClient.getINSTANCE().getBloodType().enqueue(new Callback<BloodTypeModel>() {
             @Override
             public void onResponse(Call<BloodTypeModel> call, Response<BloodTypeModel> response) {
                 if (response.body().getStatus() == 1) {
-                    for (int i = 0; i < response.body().getData().size(); i++) {
-                        bloodTypesList.add(response.body().getData().get(i).getName());
-                    }
+                    bloodTypesList.addAll(response.body().getData());
                 }
             }
 
@@ -101,9 +102,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onResponse(Call<GovernateModel> call, Response<GovernateModel> response) {
                 if (response.body().getStatus() == 1) {
-                    for (int i = 0; i < response.body().getData().size(); i++) {
-                        governatesList.add(response.body().getData().get(i).getName());
-                    }
+                    governatesList.addAll(response.body().getData());
                 }
             }
 
@@ -113,15 +112,15 @@ public class RegisterFragment extends Fragment {
         });
 
 
-        final ArrayAdapter<String> bloodTypeAdapter = new ArrayAdapter<String>(getContext(), R.layout.custom_spinner_layout, bloodTypesList);
+        final ArrayAdapter<BloodTypeData> bloodTypeAdapter = new ArrayAdapter<>(getContext(), R.layout.custom_spinner_layout, bloodTypesList);
         bloodTypeAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         fragmentRegisterBloodTypeSpinner.setAdapter(bloodTypeAdapter);
 
-        final ArrayAdapter<String> governateAdapter = new ArrayAdapter<String>(getContext(), R.layout.custom_spinner_layout, governatesList);
+        final ArrayAdapter<GovernateData> governateAdapter = new ArrayAdapter<>(getContext(), R.layout.custom_spinner_layout, governatesList);
         governateAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         fragmentRegisterGoernarateSpinner.setAdapter(governateAdapter);
 
-        final ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(getContext(), R.layout.custom_spinner_layout, citysList);
+        final ArrayAdapter<CityData> cityAdapter = new ArrayAdapter<>(getContext(), R.layout.custom_spinner_layout, citysList);
         cityAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         fragmentRegisterCitySpinner.setAdapter(cityAdapter);
 
@@ -129,8 +128,8 @@ public class RegisterFragment extends Fragment {
         fragmentRegisterBloodTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                if (id > 0) {
-                    bloodTypeId = String.valueOf(id);
+                if (id != 0) {
+                    bloodTypeId = String.valueOf(((BloodTypeData) adapterView.getSelectedItem()).getId());
                 }
             }
 
@@ -144,18 +143,15 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 if (id != 0) {
-                    String x = String.valueOf(id);
+                    String x = String.valueOf(((GovernateData) adapterView.getSelectedItem()).getId());
 
-                    Call<CityModel> cityModelCall = ApiClient.getINSTANCE().getCity(x);
-                    cityModelCall.enqueue(new Callback<CityModel>() {
+                    ApiClient.getINSTANCE().getCity(x).enqueue(new Callback<CityModel>() {
                         @Override
                         public void onResponse(Call<CityModel> call, Response<CityModel> response) {
                             if (response.body().getStatus() == 1) {
                                 citysList.clear();
-                                citysList.add("المدينة");
-                                for (int i = 0; i < response.body().getData().size(); i++) {
-                                    citysList.add(response.body().getData().get(i).getName());
-                                }
+                                citysList.add(new CityData(0,"المدينة"));
+                                citysList.addAll(response.body().getData());
                                 cityAdapter.notifyDataSetChanged();
                             }
                         }
@@ -178,7 +174,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 if (id != 0) {
-                    cityId = String.valueOf(id);
+                    cityId = String.valueOf(((CityData) adapterView.getSelectedItem()).getId());
                 }
             }
 
@@ -194,16 +190,14 @@ public class RegisterFragment extends Fragment {
                 int mm = month + 1;
                 String m;
                 String d;
-//                String m = String.format("%02d", mm);
-//                String d = String.format("%02d", day);
-                if (mm <=9){
-                    m ="0" + mm;
-                }else {
+                if (mm <= 9) {
+                    m = "0" + mm;
+                } else {
                     m = String.valueOf(mm);
                 }
-                if (day <=9){
-                    d ="0" + day;
-                }else {
+                if (day <= 9) {
+                    d = "0" + day;
+                } else {
                     d = String.valueOf(day);
                 }
                 birthDate = year + "-" + m + "-" + d;
@@ -243,16 +237,14 @@ public class RegisterFragment extends Fragment {
                 int mm = month + 1;
                 String m;
                 String d;
-//                String m = String.format("%02d", mm);
-//                String d = String.format("%02d", day);
-                if (mm <=9){
-                    m ="0" + mm;
-                }else {
+                if (mm <= 9) {
+                    m = "0" + mm;
+                } else {
                     m = String.valueOf(mm);
                 }
-                if (day <=9){
-                    d ="0" + day;
-                }else {
+                if (day <= 9) {
+                    d = "0" + day;
+                } else {
                     d = String.valueOf(day);
                 }
                 donationLastDate = year + "-" + m + "-" + d;
