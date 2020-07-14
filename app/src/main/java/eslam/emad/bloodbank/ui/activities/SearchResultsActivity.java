@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -25,9 +24,8 @@ import eslam.emad.bloodbank.data.api.ApiClient;
 import eslam.emad.bloodbank.data.models.posts.PostData;
 import eslam.emad.bloodbank.data.models.posts.PostModel;
 import eslam.emad.bloodbank.data.models.setGetFavoritePosts.SetGetFavoritePostsModel;
-import eslam.emad.bloodbank.ui.viewModels.FavoritePostsViewModel;
 import eslam.emad.bloodbank.ui.viewModels.SearchPostsViewModel;
-import eslam.emad.bloodbank.ui.viewModels.ViewModelFactory;
+import eslam.emad.bloodbank.ui.viewModels.viewModelsFactory.ViewModelFactory;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

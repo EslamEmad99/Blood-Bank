@@ -129,8 +129,8 @@ public class ApiClient {
         return httpLoggingInterceptor;
     }
 
-    public Call<LoginModel> onLogin(String phone, String number) {
-        return apiInterface.onLogin(phone, number);
+    public Call<LoginModel> onLogin(String phone, String password) {
+        return apiInterface.onLogin(phone, password);
     }
 
     public Call<ResetPasswordModel> onResetPassword(String phone) {

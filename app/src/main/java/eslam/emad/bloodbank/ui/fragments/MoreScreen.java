@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.emad.bloodbank.R;
 import eslam.emad.bloodbank.data.SharedPreferencesManger;
+import eslam.emad.bloodbank.data.models.login.LoginModel;
+import eslam.emad.bloodbank.repository.Repository;
 import eslam.emad.bloodbank.ui.activities.LoginActivity;
 
 import butterknife.ButterKnife;
@@ -59,6 +61,10 @@ public class MoreScreen extends Fragment {
     @OnClick(R.id.fragment_more_screen_log_out_tv)
     public void onView6Clicked() {
         SharedPreferencesManger.getINSTANCE(getContext()).saveBooleanValue("is_remembered",false);
+        LoginModel loginModel = new LoginModel();
+        loginModel.setStatus(0);
+        loginModel.setMsg("logged out");
+        Repository.getINSTANCE().loginModel.setValue(loginModel);
         //remove notification token
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);

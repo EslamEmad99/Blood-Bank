@@ -11,6 +11,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.emad.bloodbank.R;
 
@@ -21,6 +23,7 @@ import eslam.emad.bloodbank.ui.activities.HomeActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import eslam.emad.bloodbank.ui.viewModels.ApplicationViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,6 +40,7 @@ public class LoginFragment extends Fragment {
     private String phoneString;
     private String passwordString;
     private boolean isChecked = false;
+    ApplicationViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,6 +49,21 @@ public class LoginFragment extends Fragment {
         }
         view = inflater.inflate(R.layout.fragment_login, container, false);
         ButterKnife.bind(this, view);
+        viewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
+        viewModel.getOnLogin().observe(getViewLifecycleOwner(), new Observer<LoginModel>() {
+            @Override
+            public void onChanged(LoginModel loginModel) {
+                if (loginModel != null) {
+                    if (loginModel.getStatus() == 1) {
+                        SharedPreferencesManger.getINSTANCE(getContext()).saveBooleanValue("is_remembered", isChecked);
+                        SharedPreferencesManger.getINSTANCE(getContext()).saveStringValue("api_key", loginModel.getLoginData().getApiToken());
+                        //register notification token
+                        goToHomeActivity();
+                    }
+                    Toast.makeText(getContext(), loginModel.getMsg(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
         return view;
     }
 
@@ -82,23 +101,7 @@ public class LoginFragment extends Fragment {
         } else if (password.length() < 4) {
             Toast.makeText(getContext(), "Password must be bigger than 4 digits", Toast.LENGTH_SHORT).show();
         } else {
-            ApiClient.getINSTANCE().onLogin(phone, password).enqueue(new Callback<LoginModel>() {
-                @Override
-                public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
-                    if (response.body().getStatus() == 1) {
-                        SharedPreferencesManger.getINSTANCE(getContext()).saveBooleanValue("is_remembered", isChecked);
-                        SharedPreferencesManger.getINSTANCE(getContext()).saveStringValue("api_key", response.body().getLoginData().getApiToken());
-                        //register notification token
-                        goToHomeActivity();
-                    }
-                    Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void onFailure(Call<LoginModel> call, Throwable t) {
-                    Toast.makeText(getContext(), "something went wrong!", Toast.LENGTH_LONG).show();
-                }
-            });
+            viewModel.setOnLogin(phone, password);
         }
     }
 

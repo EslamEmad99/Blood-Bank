@@ -1,8 +1,10 @@
-package eslam.emad.bloodbank.ui.viewModels;
+package eslam.emad.bloodbank.ui.viewModels.viewModelsFactory;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+
+import eslam.emad.bloodbank.ui.viewModels.SearchPostsViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory  {
 
