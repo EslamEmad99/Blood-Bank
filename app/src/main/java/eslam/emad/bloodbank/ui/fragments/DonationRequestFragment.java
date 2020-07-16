@@ -32,6 +32,7 @@ import eslam.emad.bloodbank.data.models.governate.GovernateData;
 import eslam.emad.bloodbank.data.models.governate.GovernateModel;
 import eslam.emad.bloodbank.ui.activities.CreateDonationRequestActivity;
 import eslam.emad.bloodbank.ui.activities.PostAndDonationInformationActivity;
+import eslam.emad.bloodbank.ui.viewModels.ApplicationViewModel;
 import eslam.emad.bloodbank.ui.viewModels.DonationViewModel;
 
 import java.util.ArrayList;
@@ -62,11 +63,16 @@ public class DonationRequestFragment extends Fragment {
     private String governateString;
     private DonationsAdapter donationsAdapter;
     private DonationViewModel donationViewModel;
+    private ApplicationViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_donation_request, container, false);
         ButterKnife.bind(this, view);
+
+        donationViewModel = new ViewModelProvider(this).get(DonationViewModel.class);
+        viewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
+
         setDataInBloodTypeSpinner();
         setDataInGovernateSpinner();
 
@@ -75,7 +81,6 @@ public class DonationRequestFragment extends Fragment {
         mRecyclerView.requestFocus();
         //mRecyclerView.setNestedScrollingEnabled(true);
 
-        donationViewModel = new ViewModelProvider(this).get(DonationViewModel.class);
         donationsAdapter = new DonationsAdapter(getContext());
 
         donationViewModel.getDonationPagedList().observe(getViewLifecycleOwner(), new Observer<PagedList<DonationData>>() {
@@ -100,7 +105,7 @@ public class DonationRequestFragment extends Fragment {
 
         donationsAdapter.setOnItemClickListener(new DonationsAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(DonationData donationData) {
+            public void onItemClick(DonationData donationData, int position) {
                 String name = donationData.getClient().getName();
                 String age = donationData.getPatientAge();
                 String phone = donationData.getPhone();
@@ -158,21 +163,32 @@ public class DonationRequestFragment extends Fragment {
 
     private void setDataInBloodTypeSpinner() {
         bloodTypesList = new ArrayList<>();
-        bloodTypesList.add(new BloodTypeData(0,"فصيلة الدم"));
-        ApiClient.getINSTANCE().getBloodType()
-                .enqueue(new Callback<BloodTypeModel>() {
-                    @Override
-                    public void onResponse(Call<BloodTypeModel> call, Response<BloodTypeModel> response) {
-                        if (response.body().getStatus() == 1) {
-                            bloodTypesList.addAll(response.body().getData());
-                        }
+        bloodTypesList.add(new BloodTypeData(0, "فصيلة الدم"));
+        viewModel.setBloodType();
+        viewModel.getBloodType().observe(getViewLifecycleOwner(), new Observer<BloodTypeModel>() {
+            @Override
+            public void onChanged(BloodTypeModel bloodTypeModel) {
+                if (bloodTypeModel != null) {
+                    if (bloodTypeModel.getStatus() == 1) {
+                        bloodTypesList.addAll(bloodTypeModel.getData());
                     }
-
-                    @Override
-                    public void onFailure(Call<BloodTypeModel> call, Throwable t) {
-
-                    }
-                });
+                }
+            }
+        });
+//        ApiClient.getINSTANCE().getBloodType()
+//                .enqueue(new Callback<BloodTypeModel>() {
+//                    @Override
+//                    public void onResponse(Call<BloodTypeModel> call, Response<BloodTypeModel> response) {
+//                        if (response.body().getStatus() == 1) {
+//                            bloodTypesList.addAll(response.body().getData());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<BloodTypeModel> call, Throwable t) {
+//
+//                    }
+//                });
         ArrayAdapter<BloodTypeData> bloodTypeAdapter = new ArrayAdapter<>(getContext(), R.layout.custom_spinner_layout, bloodTypesList);
         bloodTypeAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         bloodTypeSpinner.setAdapter(bloodTypeAdapter);
@@ -181,20 +197,31 @@ public class DonationRequestFragment extends Fragment {
     private void setDataInGovernateSpinner() {
         governateList = new ArrayList<>();
         governateList.add(new GovernateData(0, "المحافظة"));
-        ApiClient.getINSTANCE().getGovernate()
-                .enqueue(new Callback<GovernateModel>() {
-                    @Override
-                    public void onResponse(Call<GovernateModel> call, Response<GovernateModel> response) {
-                        if (response.body().getStatus() == 1) {
-                            governateList.addAll(response.body().getData());
-                        }
+        viewModel.setGovernate();
+        viewModel.getGovernate().observe(getViewLifecycleOwner(), new Observer<GovernateModel>() {
+            @Override
+            public void onChanged(GovernateModel governateModel) {
+                if (governateModel != null) {
+                    if (governateModel.getStatus() == 1) {
+                        governateList.addAll(governateModel.getData());
                     }
-
-                    @Override
-                    public void onFailure(Call<GovernateModel> call, Throwable t) {
-
-                    }
-                });
+                }
+            }
+        });
+//        ApiClient.getINSTANCE().getGovernate()
+//                .enqueue(new Callback<GovernateModel>() {
+//                    @Override
+//                    public void onResponse(Call<GovernateModel> call, Response<GovernateModel> response) {
+//                        if (response.body().getStatus() == 1) {
+//                            governateList.addAll(response.body().getData());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<GovernateModel> call, Throwable t) {
+//
+//                    }
+//                });
 
         ArrayAdapter<GovernateData> governateAdapter = new ArrayAdapter<>(getContext(), R.layout.custom_spinner_layout, governateList);
         governateAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);

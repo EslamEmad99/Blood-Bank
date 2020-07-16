@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.emad.bloodbank.R;
 
@@ -23,10 +25,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import eslam.emad.bloodbank.data.Constants;
 import eslam.emad.bloodbank.data.api.ApiClient;
+import eslam.emad.bloodbank.data.models.bloodType.BloodTypeData;
 import eslam.emad.bloodbank.data.models.bloodType.BloodTypeModel;
+import eslam.emad.bloodbank.data.models.city.CityData;
 import eslam.emad.bloodbank.data.models.city.CityModel;
 import eslam.emad.bloodbank.data.models.createDonation.CreateDonationModel;
+import eslam.emad.bloodbank.data.models.governate.GovernateData;
 import eslam.emad.bloodbank.data.models.governate.GovernateModel;
+import eslam.emad.bloodbank.ui.viewModels.ApplicationViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,68 +62,58 @@ public class CreateDonationRequestActivity extends AppCompatActivity {
     @BindView(R.id.donation_activity_enter_btn)
     Button donationActivityEnterBtn;
     public static final int CREATE_DONATION_REQUEST_ACTIVITY_REQUEST_CODE = 149;
-    private ArrayList<String> bloodTypesList;
-    private ArrayList<String> governatesList;
-    private ArrayList<String> citysList;
+    private ArrayList<BloodTypeData> bloodTypesList;
+    private ArrayList<GovernateData> governatesList;
+    private ArrayList<CityData> citysList;
     private String apiToken, name, age, bloodTypeId, bagsNum, hospitalName, hospitalAddress, cityId, phone, notes, latitude, longitude;
-
+    ApplicationViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_donation_request);
         ButterKnife.bind(this);
-
         setTitle("Create donation request");
+
+        viewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
 
         bloodTypesList = new ArrayList<>();
         governatesList = new ArrayList<>();
         citysList = new ArrayList<>();
-        bloodTypesList.add("فصيلة الدم");
-        governatesList.add("المحافظة");
-        citysList.add("اختر محافظة اولا");
+        bloodTypesList.add(new BloodTypeData(0, "فصيلة الدم"));
+        governatesList.add(new GovernateData(0, "المحافظة"));
+        citysList.add(new CityData(0, "اختر المحافظة اولا"));
 
-        ApiClient.getINSTANCE().getBloodType().enqueue(new Callback<BloodTypeModel>() {
+        viewModel.setBloodType();
+        viewModel.getBloodType().observe(this, new Observer<BloodTypeModel>() {
             @Override
-            public void onResponse(Call<BloodTypeModel> call, Response<BloodTypeModel> response) {
-                if (response.body().getStatus() == 1) {
-                    for (int i = 0; i < response.body().getData().size(); i++) {
-                        bloodTypesList.add(response.body().getData().get(i).getName());
-                    }
+            public void onChanged(BloodTypeModel bloodTypeModel) {
+                if (bloodTypeModel.getStatus() == 1) {
+                    bloodTypesList.addAll(bloodTypeModel.getData());
                 }
-            }
-
-            @Override
-            public void onFailure(Call<BloodTypeModel> call, Throwable t) {
-
             }
         });
 
-        ApiClient.getINSTANCE().getGovernate().enqueue(new Callback<GovernateModel>() {
+        viewModel.setGovernate();
+        viewModel.getGovernate().observe(this, new Observer<GovernateModel>() {
             @Override
-            public void onResponse(Call<GovernateModel> call, Response<GovernateModel> response) {
-                if (response.body().getStatus() == 1) {
-                    for (int i = 0; i < response.body().getData().size(); i++) {
-                        governatesList.add(response.body().getData().get(i).getName());
-                    }
+            public void onChanged(GovernateModel governateModel) {
+                if (governateModel.getStatus() == 1) {
+                    governatesList.addAll(governateModel.getData());
+                    Toast.makeText(CreateDonationRequestActivity.this, "Toast", Toast.LENGTH_SHORT).show();
                 }
-            }
-
-            @Override
-            public void onFailure(Call<GovernateModel> call, Throwable t) {
             }
         });
 
-
-        final ArrayAdapter<String> bloodTypeAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner_layout, bloodTypesList);
+        final ArrayAdapter<BloodTypeData> bloodTypeAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_layout, bloodTypesList);
         bloodTypeAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         donationActivityBloodTypeSpinner.setAdapter(bloodTypeAdapter);
 
-        final ArrayAdapter<String> governateAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner_layout, governatesList);
+        final ArrayAdapter<GovernateData> governateAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_layout, governatesList);
         governateAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         donationActivityGovernarateSpinner.setAdapter(governateAdapter);
 
-        final ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(this, R.layout.custom_spinner_layout, citysList);
+        final ArrayAdapter<CityData> cityAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_layout, citysList);
         cityAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         donationActivityCitySpinner.setAdapter(cityAdapter);
 
@@ -125,7 +121,7 @@ public class CreateDonationRequestActivity extends AppCompatActivity {
         donationActivityBloodTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                if (id > 0) {
+                if (id != 0) {
                     bloodTypeId = String.valueOf(id);
                 }
             }
@@ -141,24 +137,16 @@ public class CreateDonationRequestActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 if (id != 0) {
                     String x = String.valueOf(id);
-
-                    Call<CityModel> cityModelCall = ApiClient.getINSTANCE().getCity(x);
-                    cityModelCall.enqueue(new Callback<CityModel>() {
+                    viewModel.setCity(x);
+                    viewModel.getCity().observe(CreateDonationRequestActivity.this, new Observer<CityModel>() {
                         @Override
-                        public void onResponse(Call<CityModel> call, Response<CityModel> response) {
-                            if (response.body().getStatus() == 1) {
+                        public void onChanged(CityModel cityModel) {
+                            if (cityModel.getStatus() == 1) {
                                 citysList.clear();
-                                citysList.add("المدينة");
-                                for (int i = 0; i < response.body().getData().size(); i++) {
-                                    citysList.add(response.body().getData().get(i).getName());
-                                }
+                                citysList.add(new CityData(0, "المدينة"));
+                                citysList.addAll(cityModel.getData());
                                 cityAdapter.notifyDataSetChanged();
                             }
-                        }
-
-                        @Override
-                        public void onFailure(Call<CityModel> call, Throwable t) {
-
                         }
                     });
                 }
@@ -225,24 +213,20 @@ public class CreateDonationRequestActivity extends AppCompatActivity {
         } else if (phone.length() != 11 || !phone.startsWith("01")) {
             Toast.makeText(this, "Wrong phone number", Toast.LENGTH_SHORT).show();
         } else {
-            if (notes.equals("")) { notes = "No Notes";}
+            if (notes.equals("")) {
+                notes = "No Notes";
+            }
 
-            ApiClient.getINSTANCE().createDonationRequest(apiToken, name, age, bloodTypeId, bagsNum, hospitalName, hospitalAddress, cityId, phone, notes, latitude, longitude)
-                    .enqueue(new Callback<CreateDonationModel>() {
-                        @Override
-                        public void onResponse(Call<CreateDonationModel> call, Response<CreateDonationModel> response) {
-                            Toast.makeText(CreateDonationRequestActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
-                            if (response.body().getStatus() ==1){
-                                goToHomeActivity();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<CreateDonationModel> call, Throwable t) {
-
-                        }
-                    });
-            Toast.makeText(this, apiToken + "\n" + name + "\n" + age + "\n" + bloodTypeId + "\n" +bagsNum + "\n" + hospitalName + "\n" + hospitalAddress + "\n" + cityId + "\n" + phone + "\n" + notes + "\n" + latitude + "\n" + longitude , Toast.LENGTH_LONG).show();
+            viewModel.setCreateDonationRequest(apiToken, name, age, bloodTypeId, bagsNum, hospitalName, hospitalAddress, cityId, phone, notes, latitude, longitude);
+            viewModel.getCreateDonationRequest().observe(this, new Observer<CreateDonationModel>() {
+                @Override
+                public void onChanged(CreateDonationModel createDonationModel) {
+                    Toast.makeText(CreateDonationRequestActivity.this, createDonationModel.getMsg(), Toast.LENGTH_SHORT).show();
+                    if (createDonationModel.getStatus() == 1) {
+                        goToHomeActivity();
+                    }
+                }
+            });
         }
     }
 

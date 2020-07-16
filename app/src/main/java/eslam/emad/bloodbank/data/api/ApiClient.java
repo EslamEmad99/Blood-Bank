@@ -185,7 +185,7 @@ public class ApiClient {
         return apiInterface.getDonationsByFilter(api_token, blood_type_id, governorate_id, page);
     }
 
-    public Call<SetGetFavoritePostsModel> setFavoritePost(int post_id, String api_token) {
+    public Call<SetGetFavoritePostsModel> setGetFavoritePost(int post_id, String api_token) {
         return apiInterface.setFavoritePost(post_id, api_token);
     }
 

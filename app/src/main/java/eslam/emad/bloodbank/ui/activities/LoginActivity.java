@@ -10,18 +10,22 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.emad.bloodbank.R;
+
 import eslam.emad.bloodbank.ui.fragments.LoginFragment;
 
 public class LoginActivity extends AppCompatActivity {
+    LoginFragment loginFragment;
+    int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        LoginFragment loginFragment = new LoginFragment();
+        loginFragment = new LoginFragment();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.activity_login_fragment_container,
@@ -31,17 +35,20 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        int count = getSupportFragmentManager().getBackStackEntryCount();
-
+        count = getSupportFragmentManager().getBackStackEntryCount();
+        Toast.makeText(this, String.valueOf(count), Toast.LENGTH_SHORT).show();
         if (count == 0) {
             Intent a = new Intent(Intent.ACTION_MAIN);
             a.addCategory(Intent.CATEGORY_HOME);
             a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(a);
-        } else {
+        }// else if (count == 2) {
+//            getSupportFragmentManager().beginTransaction().replace(R.id.activity_login_fragment_container,
+//                    loginFragment).commit();
+//        }
+        else {
             getSupportFragmentManager().popBackStack();
         }
-
     }
 
     @Override

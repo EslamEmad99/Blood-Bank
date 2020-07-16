@@ -29,6 +29,7 @@ import eslam.emad.bloodbank.data.api.ApiClient;
 import eslam.emad.bloodbank.data.models.setGetFavoritePosts.SetGetFavoritePostsModel;
 import eslam.emad.bloodbank.data.models.posts.PostData;
 import eslam.emad.bloodbank.ui.activities.PostAndDonationInformationActivity;
+import eslam.emad.bloodbank.ui.viewModels.ApplicationViewModel;
 import eslam.emad.bloodbank.ui.viewModels.PostsViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,6 +47,7 @@ public class ArticlesFragment extends Fragment {
     SwipeRefreshLayout mSwipeRefreshLayout;
     private ArticlesAdapter mAdapter;
     private PostsViewModel postsViewModel;
+    private ApplicationViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -75,6 +77,7 @@ public class ArticlesFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
 
         postsViewModel = new ViewModelProvider(this).get(PostsViewModel.class);
+        viewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
         mAdapter = new ArticlesAdapter(getContext());
 
         postsViewModel.getItemPagedList().observe(getViewLifecycleOwner(), new Observer<PagedList<PostData>>() {
@@ -96,7 +99,7 @@ public class ArticlesFragment extends Fragment {
 
         mAdapter.setOnItemClickListener(new ArticlesAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(PostData postData) {
+            public void onItemClick(PostData postData, int position) {
                 Intent intent = new Intent(getActivity(), PostAndDonationInformationActivity.class);
                 intent.putExtra("post_image", postData.getThumbnailFullPath());
                 intent.putExtra("title", postData.getTitle());
@@ -105,23 +108,11 @@ public class ArticlesFragment extends Fragment {
             }
 
             @Override
-            public void onFavoriteClick(PostData postData, boolean isChecked) {
+            public void onFavoriteClick(PostData postData, boolean isChecked, int position) {
                 isChecked = !isChecked;
                 postData.setIsFavourite(isChecked);
-                mAdapter.notifyDataSetChanged();
-                ApiClient.getINSTANCE()
-                        .setFavoritePost(postData.getId(), Constants.API_TOKEN)
-                        .enqueue(new Callback<SetGetFavoritePostsModel>() {
-                            @Override
-                            public void onResponse(Call<SetGetFavoritePostsModel> call, Response<SetGetFavoritePostsModel> response) {
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<SetGetFavoritePostsModel> call, Throwable t) {
-
-                            }
-                        });
+                mAdapter.notifyItemChanged(position);
+                viewModel.setSetGetFavoritePost(postData.getId(), Constants.API_TOKEN);
             }
         });
         return view;

@@ -21,7 +21,7 @@ public class DonationsAdapter extends PagedListAdapter<DonationData, DonationsAd
     private DonationsAdapter.OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(DonationData donationData);
+        void onItemClick(DonationData donationData, int position);
     }
 
     public void setOnItemClickListener(DonationsAdapter.OnItemClickListener listener) {
@@ -85,7 +85,7 @@ public class DonationsAdapter extends PagedListAdapter<DonationData, DonationsAd
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(getItem(position));
+                            listener.onItemClick(getItem(position), position);
                         }
                     }
                 }

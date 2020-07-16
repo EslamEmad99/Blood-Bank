@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.emad.bloodbank.R;
 
@@ -38,6 +40,7 @@ import eslam.emad.bloodbank.data.models.city.CityModel;
 import eslam.emad.bloodbank.data.models.governate.GovernateData;
 import eslam.emad.bloodbank.data.models.governate.GovernateModel;
 import eslam.emad.bloodbank.data.models.register.RegisterModel;
+import eslam.emad.bloodbank.ui.viewModels.ApplicationViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,11 +77,24 @@ public class ProfileFragment extends Fragment {
     private CalendarView calendarView;
     private String name, email, birthDate, cityId, governateId, phone, donationLastDate, password, passwordConfirmation, bloodTypeId, apiToken;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+    private ApplicationViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, view);
+        viewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
+        viewModel.getEditProfileData().observe(getViewLifecycleOwner(), new Observer<RegisterModel>() {
+            @Override
+            public void onChanged(RegisterModel registerModel) {
+                if (registerModel != null){
+                    Toast.makeText(getContext(), registerModel.getMsg(), Toast.LENGTH_LONG).show();
+                    if (registerModel.getStatus() == 1) {
+                        goToMoreFragment(registerModel.getMsg());
+                    }
+                }
+            }
+        });
         dialog = new Dialog(getContext());
 
         bloodTypesList = new ArrayList<>();
@@ -88,34 +104,52 @@ public class ProfileFragment extends Fragment {
         governatesList.add(new GovernateData(0, "المحافظة"));
         citysList.add(new CityData(0, "اختر المحافظة اولا"));
 
-        ApiClient.getINSTANCE().getBloodType().enqueue(new Callback<BloodTypeModel>() {
+        viewModel.setBloodType();
+        viewModel.getBloodType().observe(getViewLifecycleOwner(), new Observer<BloodTypeModel>() {
             @Override
-            public void onResponse(Call<BloodTypeModel> call, Response<BloodTypeModel> response) {
-                if (response.body().getStatus() == 1) {
-                    bloodTypesList.addAll(response.body().getData());
+            public void onChanged(BloodTypeModel bloodTypeModel) {
+                if (bloodTypeModel.getStatus() == 1) {
+                    bloodTypesList.addAll(bloodTypeModel.getData());
                 }
             }
+        });
+//        ApiClient.getINSTANCE().getBloodType().enqueue(new Callback<BloodTypeModel>() {
+//            @Override
+//            public void onResponse(Call<BloodTypeModel> call, Response<BloodTypeModel> response) {
+//                if (response.body().getStatus() == 1) {
+//                    bloodTypesList.addAll(response.body().getData());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<BloodTypeModel> call, Throwable t) {
+//
+//            }
+//        });
 
+        viewModel.setGovernate();
+        viewModel.getGovernate().observe(getViewLifecycleOwner(), new Observer<GovernateModel>() {
             @Override
-            public void onFailure(Call<BloodTypeModel> call, Throwable t) {
-
+            public void onChanged(GovernateModel governateModel) {
+                if (governateModel.getStatus() == 1) {
+                    governatesList.addAll(governateModel.getData());
+                }
             }
         });
 
-
-        ApiClient.getINSTANCE().getGovernate().enqueue(new Callback<GovernateModel>() {
-            @Override
-            public void onResponse(Call<GovernateModel> call, Response<GovernateModel> response) {
-                if (response.body().getStatus() == 1) {
-                    governatesList.addAll(response.body().getData());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GovernateModel> call, Throwable t) {
-
-            }
-        });
+//        ApiClient.getINSTANCE().getGovernate().enqueue(new Callback<GovernateModel>() {
+//            @Override
+//            public void onResponse(Call<GovernateModel> call, Response<GovernateModel> response) {
+//                if (response.body().getStatus() == 1) {
+//                    governatesList.addAll(response.body().getData());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<GovernateModel> call, Throwable t) {
+//
+//            }
+//        });
 
         final ArrayAdapter<BloodTypeData> bloodTypeAdapter = new ArrayAdapter<>(getContext(), R.layout.custom_spinner_layout, bloodTypesList);
         bloodTypeAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
@@ -129,58 +163,118 @@ public class ProfileFragment extends Fragment {
         cityAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         citySpinner.setAdapter(cityAdapter);
 
-        ApiClient.getINSTANCE().getProfileData(Constants.API_TOKEN).enqueue(new Callback<RegisterModel>() {
+        viewModel.setProfileData(Constants.API_TOKEN);
+        viewModel.getProfileData().observe(getViewLifecycleOwner(), new Observer<RegisterModel>() {
             @Override
-            public void onResponse(Call<RegisterModel> call, Response<RegisterModel> response) {
-                if (response.body() != null) {
-                    name = response.body().getRegisterData().getClient().getName();
+            public void onChanged(RegisterModel registerModel) {
+                if (registerModel != null) {
+                    name = registerModel.getRegisterData().getClient().getName();
                     nameEditText.setText(name);
 
-                    email = response.body().getRegisterData().getClient().getEmail();
+                    email = registerModel.getRegisterData().getClient().getEmail();
                     emailEditText.setText(email);
 
-                    birthDate = response.body().getRegisterData().getClient().getBirthDate();
+                    birthDate = registerModel.getRegisterData().getClient().getBirthDate();
                     String z = getResources().getString(R.string.birthday) + " " + birthDate;
                     birthEditText.setText(z);
 
-                    bloodTypeId = response.body().getRegisterData().getClient().getBloodTypeId();
+                    bloodTypeId = registerModel.getRegisterData().getClient().getBloodTypeId();
 
-                    donationLastDate = response.body().getRegisterData().getClient().getDonationLastDate();
+                    donationLastDate = registerModel.getRegisterData().getClient().getDonationLastDate();
                     lastDonationEditText.setText(getResources().getString(R.string.last_donation_date) + " " + donationLastDate);
 
-                    governateId = response.body().getRegisterData().getClient().getCity().getGovernorateId();
+                    governateId = registerModel.getRegisterData().getClient().getCity().getGovernorateId();
 
                     if (governateId != null) {
-                        ApiClient.getINSTANCE().getCity(governateId).enqueue(new Callback<CityModel>() {
+                        viewModel.setCity(governateId);
+                        viewModel.getCity().observe(getViewLifecycleOwner(), new Observer<CityModel>() {
                             @Override
-                            public void onResponse(Call<CityModel> call, Response<CityModel> response) {
-                                if (response.body().getStatus() == 1) {
+                            public void onChanged(CityModel cityModel) {
+                                if (cityModel.getStatus() == 1) {
                                     citysList.clear();
                                     citysList.add(new CityData(0,"المدينة"));
-                                    citysList.addAll(response.body().getData());
+                                    citysList.addAll(cityModel.getData());
                                 }
                             }
-
-                            @Override
-                            public void onFailure(Call<CityModel> call, Throwable t) {
-
-                            }
                         });
+//                        ApiClient.getINSTANCE().getCity(governateId).enqueue(new Callback<CityModel>() {
+//                            @Override
+//                            public void onResponse(Call<CityModel> call, Response<CityModel> response) {
+//                                if (response.body().getStatus() == 1) {
+//                                    citysList.clear();
+//                                    citysList.add(new CityData(0,"المدينة"));
+//                                    citysList.addAll(response.body().getData());
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<CityModel> call, Throwable t) {
+//
+//                            }
+//                        });
 
                     }
 
-                    cityId = response.body().getRegisterData().getClient().getCityId();
+                    cityId = registerModel.getRegisterData().getClient().getCityId();
 
-                    phone = response.body().getRegisterData().getClient().getPhone();
+                    phone = registerModel.getRegisterData().getClient().getPhone();
                     phoneNumberEditText.setText(phone);
                 }
             }
-
-            @Override
-            public void onFailure(Call<RegisterModel> call, Throwable t) {
-
-            }
         });
+
+//        ApiClient.getINSTANCE().getProfileData(Constants.API_TOKEN).enqueue(new Callback<RegisterModel>() {
+//            @Override
+//            public void onResponse(Call<RegisterModel> call, Response<RegisterModel> response) {
+//                if (response.body() != null) {
+//                    name = response.body().getRegisterData().getClient().getName();
+//                    nameEditText.setText(name);
+//
+//                    email = response.body().getRegisterData().getClient().getEmail();
+//                    emailEditText.setText(email);
+//
+//                    birthDate = response.body().getRegisterData().getClient().getBirthDate();
+//                    String z = getResources().getString(R.string.birthday) + " " + birthDate;
+//                    birthEditText.setText(z);
+//
+//                    bloodTypeId = response.body().getRegisterData().getClient().getBloodTypeId();
+//
+//                    donationLastDate = response.body().getRegisterData().getClient().getDonationLastDate();
+//                    lastDonationEditText.setText(getResources().getString(R.string.last_donation_date) + " " + donationLastDate);
+//
+//                    governateId = response.body().getRegisterData().getClient().getCity().getGovernorateId();
+//
+//                    if (governateId != null) {
+//                        ApiClient.getINSTANCE().getCity(governateId).enqueue(new Callback<CityModel>() {
+//                            @Override
+//                            public void onResponse(Call<CityModel> call, Response<CityModel> response) {
+//                                if (response.body().getStatus() == 1) {
+//                                    citysList.clear();
+//                                    citysList.add(new CityData(0,"المدينة"));
+//                                    citysList.addAll(response.body().getData());
+//                                }
+//                            }
+//
+//                            @Override
+//                            public void onFailure(Call<CityModel> call, Throwable t) {
+//
+//                            }
+//                        });
+//
+//                    }
+//
+//                    cityId = response.body().getRegisterData().getClient().getCityId();
+//
+//                    phone = response.body().getRegisterData().getClient().getPhone();
+//                    phoneNumberEditText.setText(phone);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<RegisterModel> call, Throwable t) {
+//
+//            }
+//        });
 
         bloodTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -201,22 +295,33 @@ public class ProfileFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 if (id != 0) {
                     String x = String.valueOf(((GovernateData) adapterView.getSelectedItem()).getId());
-                    ApiClient.getINSTANCE().getCity(x).enqueue(new Callback<CityModel>() {
+                    viewModel.setCity(x);
+                    viewModel.getCity().observe(getViewLifecycleOwner(), new Observer<CityModel>() {
                         @Override
-                        public void onResponse(Call<CityModel> call, Response<CityModel> response) {
-                            if (response.body().getStatus() == 1) {
+                        public void onChanged(CityModel cityModel) {
+                            if (cityModel.getStatus() == 1) {
                                 citysList.clear();
                                 citysList.add(new CityData(0,"المدينة"));
-                                citysList.addAll(response.body().getData());
-                                cityAdapter.notifyDataSetChanged();
+                                citysList.addAll(cityModel.getData());
                             }
                         }
-
-                        @Override
-                        public void onFailure(Call<CityModel> call, Throwable t) {
-
-                        }
                     });
+//                    ApiClient.getINSTANCE().getCity(x).enqueue(new Callback<CityModel>() {
+//                        @Override
+//                        public void onResponse(Call<CityModel> call, Response<CityModel> response) {
+//                            if (response.body().getStatus() == 1) {
+//                                citysList.clear();
+//                                citysList.add(new CityData(0,"المدينة"));
+//                                citysList.addAll(response.body().getData());
+//                                cityAdapter.notifyDataSetChanged();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<CityModel> call, Throwable t) {
+//
+//                        }
+//                    });
                 }
             }
 
@@ -295,21 +400,22 @@ public class ProfileFragment extends Fragment {
         } else if (password.length() < 4) {
             Toast.makeText(getContext(), "Password must be bigger than 4 digits", Toast.LENGTH_SHORT).show();
         } else {
-            ApiClient.getINSTANCE().editProfileData(name, email, birthDate, cityId, phone, donationLastDate, password, passwordConfirmation, bloodTypeId, apiToken)
-                    .enqueue(new Callback<RegisterModel>() {
-                        @Override
-                        public void onResponse(Call<RegisterModel> call, Response<RegisterModel> response) {
-                            Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
-                            if (response.body().getStatus() == 1) {
-                                goToMoreFragment(response.body().getMsg());
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<RegisterModel> call, Throwable t) {
-                            Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            viewModel.setEditProfileData(name, email, birthDate, cityId, phone, donationLastDate, password, passwordConfirmation, bloodTypeId, apiToken);
+//            ApiClient.getINSTANCE().editProfileData(name, email, birthDate, cityId, phone, donationLastDate, password, passwordConfirmation, bloodTypeId, apiToken)
+//                    .enqueue(new Callback<RegisterModel>() {
+//                        @Override
+//                        public void onResponse(Call<RegisterModel> call, Response<RegisterModel> response) {
+//                            Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
+//                            if (response.body().getStatus() == 1) {
+//                                goToMoreFragment(response.body().getMsg());
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<RegisterModel> call, Throwable t) {
+//                            Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
         }
     }
 

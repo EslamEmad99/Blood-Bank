@@ -22,7 +22,7 @@ public class NotificationsAdapter extends PagedListAdapter<NotificationData, Not
     private NotificationsAdapter.OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(NotificationData notification);
+        void onItemClick(NotificationData notification, int position);
     }
 
     public void setOnItemClickListener(NotificationsAdapter.OnItemClickListener listener) {
@@ -91,7 +91,7 @@ public class NotificationsAdapter extends PagedListAdapter<NotificationData, Not
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(getItem(position));
+                            listener.onItemClick(getItem(position), position);
                         }
                     }
                 }

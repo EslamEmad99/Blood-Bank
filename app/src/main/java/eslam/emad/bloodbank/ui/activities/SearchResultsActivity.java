@@ -24,6 +24,7 @@ import eslam.emad.bloodbank.data.api.ApiClient;
 import eslam.emad.bloodbank.data.models.posts.PostData;
 import eslam.emad.bloodbank.data.models.posts.PostModel;
 import eslam.emad.bloodbank.data.models.setGetFavoritePosts.SetGetFavoritePostsModel;
+import eslam.emad.bloodbank.ui.viewModels.ApplicationViewModel;
 import eslam.emad.bloodbank.ui.viewModels.SearchPostsViewModel;
 import eslam.emad.bloodbank.ui.viewModels.viewModelsFactory.ViewModelFactory;
 import retrofit2.Call;
@@ -42,6 +43,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     TextView searchPostsActivityTv;
     private ArticlesAdapter mAdapter;
     private SearchPostsViewModel searchPostsViewModel;
+    ApplicationViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,23 +52,18 @@ public class SearchResultsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setTitle(getString(R.string.search_result));
 
-        ApiClient.getINSTANCE()
-                .getAllSearchPosts(Constants.API_TOKEN, 0, getIntent().getStringExtra("search"), "")
-                .enqueue(new Callback<PostModel>() {
-                    @Override
-                    public void onResponse(Call<PostModel> call, Response<PostModel> response) {
-                        if (response.body().getPostsResponseData().getPostData().size() == 0) {
-                            mRecyclerView.setVisibility(View.GONE);
-                            searchPostsActivityImgv.setVisibility(View.VISIBLE);
-                            searchPostsActivityTv.setVisibility(View.VISIBLE);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<PostModel> call, Throwable t) {
-
-                    }
-                });
+        viewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
+        viewModel.setIsSearchPostsEmpty(Constants.API_TOKEN, 0, getIntent().getStringExtra("search"), "");
+        viewModel.getIsSearchPostsEmpty().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean b) {
+                if (b){
+                    mRecyclerView.setVisibility(View.GONE);
+                    searchPostsActivityImgv.setVisibility(View.VISIBLE);
+                    searchPostsActivityTv.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
@@ -86,7 +83,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         mAdapter.setOnItemClickListener(new ArticlesAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(PostData postData) {
+            public void onItemClick(PostData postData, int position) {
                 Intent intent = new Intent(SearchResultsActivity.this, PostAndDonationInformationActivity.class);
                 intent.putExtra("post_image", postData.getThumbnailFullPath());
                 intent.putExtra("title", postData.getTitle());
@@ -95,22 +92,10 @@ public class SearchResultsActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFavoriteClick(PostData postData, boolean isChecked) {
+            public void onFavoriteClick(PostData postData, boolean isChecked, int position) {
                 postData.setIsFavourite(!isChecked);
-                mAdapter.notifyDataSetChanged();
-                ApiClient.getINSTANCE()
-                        .setFavoritePost(postData.getId(), Constants.API_TOKEN)
-                        .enqueue(new Callback<SetGetFavoritePostsModel>() {
-                            @Override
-                            public void onResponse(Call<SetGetFavoritePostsModel> call, Response<SetGetFavoritePostsModel> response) {
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<SetGetFavoritePostsModel> call, Throwable t) {
-
-                            }
-                        });
+                mAdapter.notifyItemChanged(position);
+                viewModel.setSetGetFavoritePost(postData.getId(), Constants.API_TOKEN);
             }
         });
 

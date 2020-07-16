@@ -12,15 +12,19 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.emad.bloodbank.R;
 
+import eslam.emad.bloodbank.data.SharedPreferencesManger;
 import eslam.emad.bloodbank.data.api.ApiClient;
 import eslam.emad.bloodbank.data.models.newPassword.NewPasswordModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import eslam.emad.bloodbank.ui.viewModels.ApplicationViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,17 +45,31 @@ public class NewPasswordFragment extends Fragment {
     private String passwordConfirmation;
     private Integer pinCode;
     private String phone;
+    private ApplicationViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_new_password, container, false);
         ButterKnife.bind(this, view);
-        SharedPreferences pref = getContext().getSharedPreferences("sharedPreferencesOfResetPassword", MODE_PRIVATE);
-        pinCode = pref.getInt("pin_code", 0);
-        phone = pref.getString("phone", "");
+        viewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
+        viewModel.getOnNewPassword().observe(getViewLifecycleOwner(), new Observer<NewPasswordModel>() {
+            @Override
+            public void onChanged(NewPasswordModel newPasswordModel) {
+                if (newPasswordModel != null){
+                    Toast.makeText(getContext(), newPasswordModel.getMsg(), Toast.LENGTH_LONG).show();
+                    if (newPasswordModel.getStatus() == 1) {
+                        goToLoginFragment();
+                    }
+                }
+            }
+        });
 
+        SharedPreferencesManger.getINSTANCE(getContext()).restoreIntegerValue("pin_code");
+        pinCode = SharedPreferencesManger.getINSTANCE(getContext()).restoreIntegerValue("pin_code");
+        phone =SharedPreferencesManger.getINSTANCE(getContext()).restoreStringValue("phone");
+
+        //this pin code must be sent with sms ^_^
         fragmentNewPasswordCheckCodeEt.setText(String.valueOf(pinCode));
-
         return view;
     }
 
@@ -84,20 +102,21 @@ public class NewPasswordFragment extends Fragment {
         } else if (password.length() < 4) {
             Toast.makeText(getContext(), "Password must be bigger than 4 digits", Toast.LENGTH_SHORT).show();
         } else {
-            ApiClient.getINSTANCE().onNewPassword(password, passwordConfirmation, pinCode, phone).enqueue(new Callback<NewPasswordModel>() {
-                @Override
-                public void onResponse(Call<NewPasswordModel> call, Response<NewPasswordModel> response) {
-                    Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
-                    if (response.body().getStatus() == 1) {
-                        goToLoginFragment();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<NewPasswordModel> call, Throwable t) {
-                    Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
+            viewModel.setOnNewPassword(password, passwordConfirmation, pinCode, phone);
+//            ApiClient.getINSTANCE().onNewPassword(password, passwordConfirmation, pinCode, phone).enqueue(new Callback<NewPasswordModel>() {
+//                @Override
+//                public void onResponse(Call<NewPasswordModel> call, Response<NewPasswordModel> response) {
+//                    Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
+//                    if (response.body().getStatus() == 1) {
+//                        goToLoginFragment();
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<NewPasswordModel> call, Throwable t) {
+//                    Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+//                }
+//            });
         }
     }
 }

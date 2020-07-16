@@ -45,7 +45,6 @@ public class ContactUsFragment extends Fragment {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:"));
         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"eslamemad903@gmail.com"});
-        //intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         try {
             startActivity(intent);
         } catch (ActivityNotFoundException e) {
@@ -96,7 +95,7 @@ public class ContactUsFragment extends Fragment {
         if (msgSubject.equals("") || msgText.equals("")) {
             Toast.makeText(getContext(), "Enter message subject and text", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getContext(), msgSubject + " \n " + msgText, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "sent successfully", Toast.LENGTH_SHORT).show();
 
             //it must be a web request here
 

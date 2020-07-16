@@ -25,6 +25,7 @@ import eslam.emad.bloodbank.data.Constants;
 import eslam.emad.bloodbank.data.api.ApiClient;
 import eslam.emad.bloodbank.data.models.notification.NotificationData;
 import eslam.emad.bloodbank.data.models.notification.NotificationModel;
+import eslam.emad.bloodbank.ui.viewModels.ApplicationViewModel;
 import eslam.emad.bloodbank.ui.viewModels.NotificationViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,31 +44,45 @@ public class NotificationFragment extends Fragment {
     RecyclerView mRecyclerView;
     private NotificationsAdapter mAdapter;
     private NotificationViewModel notificationViewModel;
-
+    private ApplicationViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_notification, container, false);
         ButterKnife.bind(this,view);
+        viewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
 
-        ApiClient.getINSTANCE()
-                .getNotifications(Constants.API_TOKEN, 0)
-                .enqueue(new Callback<NotificationModel>() {
-                    @Override
-                    public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
-                        if (response.body().getNotificationResponseData().getData().size() == 0) {
-                            mRecyclerView.setVisibility(View.GONE);
-                            imageView.setVisibility(View.VISIBLE);
-                            textView.setVisibility(View.VISIBLE);
-                            button.setVisibility(View.VISIBLE);
-                        }
-                    }
+        viewModel.setIsNotificationEmpty(Constants.API_TOKEN, 0);
+        viewModel.getIsNotificationEmpty().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean b) {
+                if (b){
+                    mRecyclerView.setVisibility(View.GONE);
+                    imageView.setVisibility(View.VISIBLE);
+                    textView.setVisibility(View.VISIBLE);
+                    button.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
-                    @Override
-                    public void onFailure(Call<NotificationModel> call, Throwable t) {
-
-                    }
-                });
+//        ApiClient.getINSTANCE()
+//                .getNotifications(Constants.API_TOKEN, 0)
+//                .enqueue(new Callback<NotificationModel>() {
+//                    @Override
+//                    public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
+//                        if (response.body().getNotificationResponseData().getData().size() == 0) {
+//                            mRecyclerView.setVisibility(View.GONE);
+//                            imageView.setVisibility(View.VISIBLE);
+//                            textView.setVisibility(View.VISIBLE);
+//                            button.setVisibility(View.VISIBLE);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<NotificationModel> call, Throwable t) {
+//
+//                    }
+//                });
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
@@ -85,7 +100,7 @@ public class NotificationFragment extends Fragment {
 
         mAdapter.setOnItemClickListener(new NotificationsAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(NotificationData notification) {
+            public void onItemClick(NotificationData notification, int position) {
                 Toast.makeText(getContext(), notification.getContent(), Toast.LENGTH_SHORT).show();
             }
         });

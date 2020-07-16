@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.emad.bloodbank.R;
 
@@ -37,6 +39,7 @@ import java.util.Calendar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import eslam.emad.bloodbank.ui.viewModels.ApplicationViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -70,47 +73,78 @@ public class RegisterFragment extends Fragment {
     private CalendarView calendarView;
     private String name, email, birthDate, cityId, phone, donationLastDate, password, passwordConfirmation, bloodTypeId;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+    private ApplicationViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_register, container, false);
         ButterKnife.bind(this, view);
+        viewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
+        viewModel.getOnRegister().observe(getViewLifecycleOwner(), new Observer<RegisterModel>() {
+            @Override
+            public void onChanged(RegisterModel registerModel) {
+                if (registerModel != null) {
+                    Toast.makeText(getContext(), registerModel.getMsg(), Toast.LENGTH_LONG).show();
+                    if (registerModel.getStatus() == 1) {
+                        goToLoginFragment();
+                    }
+                }
+            }
+        });
         dialog = new Dialog(getContext());
 
         bloodTypesList = new ArrayList<>();
         governatesList = new ArrayList<>();
         citysList = new ArrayList<>();
         bloodTypesList.add(new BloodTypeData(0, "فصيلة الدم"));
-        governatesList.add(new GovernateData(0,"المحافظة"));
-        citysList.add(new CityData(0,"اختر المحافظة اولا"));
+        governatesList.add(new GovernateData(0, "المحافظة"));
+        citysList.add(new CityData(0, "اختر المحافظة اولا"));
 
-        ApiClient.getINSTANCE().getBloodType().enqueue(new Callback<BloodTypeModel>() {
+        viewModel.setBloodType();
+        viewModel.getBloodType().observe(getViewLifecycleOwner(), new Observer<BloodTypeModel>() {
             @Override
-            public void onResponse(Call<BloodTypeModel> call, Response<BloodTypeModel> response) {
-                if (response.body().getStatus() == 1) {
-                    bloodTypesList.addAll(response.body().getData());
+            public void onChanged(BloodTypeModel bloodTypeModel) {
+                if (bloodTypeModel.getStatus() == 1) {
+                    bloodTypesList.addAll(bloodTypeModel.getData());
                 }
             }
+        });
+//        ApiClient.getINSTANCE().getBloodType().enqueue(new Callback<BloodTypeModel>() {
+//            @Override
+//            public void onResponse(Call<BloodTypeModel> call, Response<BloodTypeModel> response) {
+//                if (response.body().getStatus() == 1) {
+//                    bloodTypesList.addAll(response.body().getData());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<BloodTypeModel> call, Throwable t) {
+//
+//            }
+//        });
 
+        viewModel.setGovernate();
+        viewModel.getGovernate().observe(getViewLifecycleOwner(), new Observer<GovernateModel>() {
             @Override
-            public void onFailure(Call<BloodTypeModel> call, Throwable t) {
-
+            public void onChanged(GovernateModel governateModel) {
+                if (governateModel.getStatus() == 1) {
+                    governatesList.addAll(governateModel.getData());
+                }
             }
         });
 
-        ApiClient.getINSTANCE().getGovernate().enqueue(new Callback<GovernateModel>() {
-            @Override
-            public void onResponse(Call<GovernateModel> call, Response<GovernateModel> response) {
-                if (response.body().getStatus() == 1) {
-                    governatesList.addAll(response.body().getData());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GovernateModel> call, Throwable t) {
-            }
-        });
-
+//        ApiClient.getINSTANCE().getGovernate().enqueue(new Callback<GovernateModel>() {
+//            @Override
+//            public void onResponse(Call<GovernateModel> call, Response<GovernateModel> response) {
+//                if (response.body().getStatus() == 1) {
+//                    governatesList.addAll(response.body().getData());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<GovernateModel> call, Throwable t) {
+//            }
+//        });
 
         final ArrayAdapter<BloodTypeData> bloodTypeAdapter = new ArrayAdapter<>(getContext(), R.layout.custom_spinner_layout, bloodTypesList);
         bloodTypeAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
@@ -145,22 +179,35 @@ public class RegisterFragment extends Fragment {
                 if (id != 0) {
                     String x = String.valueOf(((GovernateData) adapterView.getSelectedItem()).getId());
 
-                    ApiClient.getINSTANCE().getCity(x).enqueue(new Callback<CityModel>() {
+                    viewModel.setCity(x);
+                    viewModel.getCity().observe(getViewLifecycleOwner(), new Observer<CityModel>() {
                         @Override
-                        public void onResponse(Call<CityModel> call, Response<CityModel> response) {
-                            if (response.body().getStatus() == 1) {
+                        public void onChanged(CityModel cityModel) {
+                            if (cityModel.getStatus() == 1) {
                                 citysList.clear();
-                                citysList.add(new CityData(0,"المدينة"));
-                                citysList.addAll(response.body().getData());
+                                citysList.add(new CityData(0, "المدينة"));
+                                citysList.addAll(cityModel.getData());
                                 cityAdapter.notifyDataSetChanged();
                             }
                         }
-
-                        @Override
-                        public void onFailure(Call<CityModel> call, Throwable t) {
-
-                        }
                     });
+
+//                    ApiClient.getINSTANCE().getCity(x).enqueue(new Callback<CityModel>() {
+//                        @Override
+//                        public void onResponse(Call<CityModel> call, Response<CityModel> response) {
+//                            if (response.body().getStatus() == 1) {
+//                                citysList.clear();
+//                                citysList.add(new CityData(0,"المدينة"));
+//                                citysList.addAll(response.body().getData());
+//                                cityAdapter.notifyDataSetChanged();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<CityModel> call, Throwable t) {
+//
+//                        }
+//                    });
                 }
             }
 
@@ -285,22 +332,23 @@ public class RegisterFragment extends Fragment {
         } else if (password.length() < 4) {
             Toast.makeText(getContext(), "Password must be bigger than 4 digits", Toast.LENGTH_SHORT).show();
         } else {
-            ApiClient.getINSTANCE().onRegister(name, email, birthDate, cityId, phone, donationLastDate, password, passwordConfirmation, bloodTypeId)
-                    .enqueue(new Callback<RegisterModel>() {
-                        @Override
-                        public void onResponse(Call<RegisterModel> call, Response<RegisterModel> response) {
-                            assert response.body() != null;
-                            Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
-                            if (response.body().getStatus() == 1) {
-                                goToLoginFragment();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<RegisterModel> call, Throwable t) {
-                            Toast.makeText(getContext(), "fail", Toast.LENGTH_LONG).show();
-                        }
-                    });
+            viewModel.setOnRegister(name, email, birthDate, cityId, phone, donationLastDate, password, passwordConfirmation, bloodTypeId);
+//            ApiClient.getINSTANCE().onRegister(name, email, birthDate, cityId, phone, donationLastDate, password, passwordConfirmation, bloodTypeId)
+//                    .enqueue(new Callback<RegisterModel>() {
+//                        @Override
+//                        public void onResponse(Call<RegisterModel> call, Response<RegisterModel> response) {
+//                            assert response.body() != null;
+//                            Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
+//                            if (response.body().getStatus() == 1) {
+//                                goToLoginFragment();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<RegisterModel> call, Throwable t) {
+//                            Toast.makeText(getContext(), "fail", Toast.LENGTH_LONG).show();
+//                        }
+//                    });
         }
     }
 

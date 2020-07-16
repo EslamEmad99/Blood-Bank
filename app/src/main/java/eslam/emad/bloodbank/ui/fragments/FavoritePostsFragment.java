@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -28,6 +27,7 @@ import eslam.emad.bloodbank.data.models.favoritePosts.FavoritePostsModel;
 import eslam.emad.bloodbank.data.models.posts.PostData;
 import eslam.emad.bloodbank.data.models.setGetFavoritePosts.SetGetFavoritePostsModel;
 import eslam.emad.bloodbank.ui.activities.PostAndDonationInformationActivity;
+import eslam.emad.bloodbank.ui.viewModels.ApplicationViewModel;
 import eslam.emad.bloodbank.ui.viewModels.FavoritePostsViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,27 +46,25 @@ public class FavoritePostsFragment extends Fragment {
     TextView favoritePostsFragmentTv;
     private ArticlesAdapter mAdapter;
     private FavoritePostsViewModel favoritePostsViewModel;
+    private ApplicationViewModel viewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_favorite_posts, container, false);
         ButterKnife.bind(this, view);
+        favoritePostsViewModel = new ViewModelProvider(this).get(FavoritePostsViewModel.class);
+        viewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
 
-        ApiClient.getINSTANCE()
-                .getAllFavoritePosts(Constants.API_TOKEN, 0)
-                .enqueue(new Callback<FavoritePostsModel>() {
+        viewModel.setIsFavoritePostsEmpty(Constants.API_TOKEN, 0);
+        viewModel.getIsFavoritePostsEmpty()
+                .observe(getViewLifecycleOwner(), new Observer<Boolean>() {
                     @Override
-                    public void onResponse(Call<FavoritePostsModel> call, Response<FavoritePostsModel> response) {
-                        if (response.body().getFavoritePostsResponseData().getData().size() == 0) {
+                    public void onChanged(Boolean b) {
+                        if (b){
                             mRecyclerView.setVisibility(View.GONE);
                             favoritePostsFragmentImgv.setVisibility(View.VISIBLE);
                             favoritePostsFragmentTv.setVisibility(View.VISIBLE);
                         }
-                    }
-
-                    @Override
-                    public void onFailure(Call<FavoritePostsModel> call, Throwable t) {
-
                     }
                 });
 
@@ -88,7 +86,7 @@ public class FavoritePostsFragment extends Fragment {
 
         mAdapter.setOnItemClickListener(new ArticlesAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(PostData postData) {
+            public void onItemClick(PostData postData, int position) {
                 Intent intent = new Intent(getActivity(), PostAndDonationInformationActivity.class);
                 intent.putExtra("post_image", postData.getThumbnailFullPath());
                 intent.putExtra("title", postData.getTitle());
@@ -97,22 +95,10 @@ public class FavoritePostsFragment extends Fragment {
             }
 
             @Override
-            public void onFavoriteClick(PostData postData, boolean isChecked) {
+            public void onFavoriteClick(PostData postData, boolean isChecked, int position) {
                 postData.setIsFavourite(!isChecked);
-                mAdapter.notifyDataSetChanged();
-                ApiClient.getINSTANCE()
-                        .setFavoritePost(postData.getId(), Constants.API_TOKEN)
-                        .enqueue(new Callback<SetGetFavoritePostsModel>() {
-                            @Override
-                            public void onResponse(Call<SetGetFavoritePostsModel> call, Response<SetGetFavoritePostsModel> response) {
-
-                            }
-
-                            @Override
-                            public void onFailure(Call<SetGetFavoritePostsModel> call, Throwable t) {
-
-                            }
-                        });
+                mAdapter.notifyItemChanged(position);
+                viewModel.setSetGetFavoritePost(postData.getId(), Constants.API_TOKEN);
             }
         });
 
@@ -120,6 +106,7 @@ public class FavoritePostsFragment extends Fragment {
             @Override
             public void onRefresh() {
                 favoritePostsViewModel.refresh();
+                viewModel.setIsFavoritePostsEmpty(Constants.API_TOKEN, 0);
             }
         });
         return view;

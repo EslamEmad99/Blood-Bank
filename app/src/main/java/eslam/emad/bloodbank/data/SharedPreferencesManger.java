@@ -13,7 +13,7 @@ public class SharedPreferencesManger {
     private SharedPreferencesManger(Context context) {
         if (sharedPreferences == null) {
             sharedPreferences = context.getSharedPreferences(
-                    "Test", MODE_PRIVATE);
+                    "BloodBankSharedPreferences", MODE_PRIVATE);
         }
     }
 

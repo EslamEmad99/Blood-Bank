@@ -26,9 +26,9 @@ public class ArticlesAdapter extends PagedListAdapter<PostData, ArticlesAdapter.
     private ArticlesAdapter.OnItemClickListener mListener;
 
     public interface OnItemClickListener {
-        void onItemClick(PostData postData);
+        void onItemClick(PostData postData, int position);
 
-        void onFavoriteClick(PostData postData, boolean isChecked);
+        void onFavoriteClick(PostData postData, boolean isChecked, int position);
     }
 
     public void setOnItemClickListener(ArticlesAdapter.OnItemClickListener listener) {
@@ -100,7 +100,7 @@ public class ArticlesAdapter extends PagedListAdapter<PostData, ArticlesAdapter.
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onItemClick(getItem(position));
+                            listener.onItemClick(getItem(position), position);
                         }
                     }
                 }
@@ -112,7 +112,7 @@ public class ArticlesAdapter extends PagedListAdapter<PostData, ArticlesAdapter.
                     if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onFavoriteClick(getItem(position), getItem(position).getIsFavourite());
+                            listener.onFavoriteClick(getItem(position), getItem(position).getIsFavourite(), position);
                         }
                     }
                 }

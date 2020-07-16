@@ -26,19 +26,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //getActivity().getActionBar().hide();
-        // Hide the status bar.
-//        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-//        view.setSystemUiVisibility(uiOptions);
-// Remember that you should never show the action bar if the
-// status bar is hidden, so hide that too if necessary.
-        //((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-//
-//        HomeActivity csActivity;
-//        csActivity = (HomeActivity) getActivity();
-//        csActivity.getSupportActionBar().hide();
         view = inflater.inflate(R.layout.fragment_home, container, false);
-
         HomeFragmentSectionPageAdapter homeFragmentSectionPageAdapter = new HomeFragmentSectionPageAdapter(getChildFragmentManager());
         ViewPager viewPager = view.findViewById(R.id.view_pager);
         viewPager.setAdapter(homeFragmentSectionPageAdapter);
