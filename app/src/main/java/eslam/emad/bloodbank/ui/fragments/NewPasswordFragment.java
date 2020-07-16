@@ -52,6 +52,7 @@ public class NewPasswordFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_new_password, container, false);
         ButterKnife.bind(this, view);
         viewModel = new ViewModelProvider(this).get(ApplicationViewModel.class);
+        viewModel.setOnResetPassword(null);
         viewModel.getOnNewPassword().observe(getViewLifecycleOwner(), new Observer<NewPasswordModel>() {
             @Override
             public void onChanged(NewPasswordModel newPasswordModel) {
@@ -77,7 +78,7 @@ public class NewPasswordFragment extends Fragment {
     private void goToLoginFragment() {
         LoginFragment loginFragment = new LoginFragment();
         getParentFragmentManager().beginTransaction().replace(R.id.activity_login_fragment_container,
-                loginFragment).addToBackStack(null).commit();
+                loginFragment,"login_fragment").addToBackStack(null).commit();
     }
 
     @OnClick(R.id.checkboxrememberme)

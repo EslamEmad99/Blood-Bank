@@ -18,7 +18,6 @@ import eslam.emad.bloodbank.ui.fragments.LoginFragment;
 
 public class LoginActivity extends AppCompatActivity {
     LoginFragment loginFragment;
-    int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,15 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        count = getSupportFragmentManager().getBackStackEntryCount();
+        LoginFragment login_fragment = (LoginFragment) getSupportFragmentManager().findFragmentByTag("login_fragment");
+        if (login_fragment != null && login_fragment.isVisible()) {
+            Intent a = new Intent(Intent.ACTION_MAIN);
+            a.addCategory(Intent.CATEGORY_HOME);
+            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(a);
+        }
+
+        int count = getSupportFragmentManager().getBackStackEntryCount();
         Toast.makeText(this, String.valueOf(count), Toast.LENGTH_SHORT).show();
         if (count == 0) {
             Intent a = new Intent(Intent.ACTION_MAIN);
