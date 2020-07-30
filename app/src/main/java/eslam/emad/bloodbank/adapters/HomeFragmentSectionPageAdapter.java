@@ -7,16 +7,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import eslam.emad.bloodbank.ui.fragments.ArticlesFragment;
-import eslam.emad.bloodbank.ui.fragments.DonationRequestFragment;
 import eslam.emad.bloodbank.ui.fragments.FavoritePostsFragment;
 
 public class HomeFragmentSectionPageAdapter extends FragmentPagerAdapter {
 
-    //private final Context mContext;
-
     public HomeFragmentSectionPageAdapter(FragmentManager fm) {
         super(fm);
-        //mContext = context;
     }
 
     @NonNull
@@ -24,7 +20,6 @@ public class HomeFragmentSectionPageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
 
         Fragment fragment = null;
-
         switch (position) {
             case 0:
                 fragment = new FavoritePostsFragment();

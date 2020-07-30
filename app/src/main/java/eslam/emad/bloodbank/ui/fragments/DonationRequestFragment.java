@@ -175,20 +175,6 @@ public class DonationRequestFragment extends Fragment {
                 }
             }
         });
-//        ApiClient.getINSTANCE().getBloodType()
-//                .enqueue(new Callback<BloodTypeModel>() {
-//                    @Override
-//                    public void onResponse(Call<BloodTypeModel> call, Response<BloodTypeModel> response) {
-//                        if (response.body().getStatus() == 1) {
-//                            bloodTypesList.addAll(response.body().getData());
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<BloodTypeModel> call, Throwable t) {
-//
-//                    }
-//                });
         ArrayAdapter<BloodTypeData> bloodTypeAdapter = new ArrayAdapter<>(getContext(), R.layout.custom_spinner_layout, bloodTypesList);
         bloodTypeAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         bloodTypeSpinner.setAdapter(bloodTypeAdapter);
@@ -208,21 +194,6 @@ public class DonationRequestFragment extends Fragment {
                 }
             }
         });
-//        ApiClient.getINSTANCE().getGovernate()
-//                .enqueue(new Callback<GovernateModel>() {
-//                    @Override
-//                    public void onResponse(Call<GovernateModel> call, Response<GovernateModel> response) {
-//                        if (response.body().getStatus() == 1) {
-//                            governateList.addAll(response.body().getData());
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<GovernateModel> call, Throwable t) {
-//
-//                    }
-//                });
-
         ArrayAdapter<GovernateData> governateAdapter = new ArrayAdapter<>(getContext(), R.layout.custom_spinner_layout, governateList);
         governateAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         governateSpinner.setAdapter(governateAdapter);

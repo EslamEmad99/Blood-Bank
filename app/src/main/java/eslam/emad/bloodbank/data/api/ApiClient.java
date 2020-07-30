@@ -75,9 +75,7 @@ public class ApiClient {
         return new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
-                //Log.d(TAG, "offline interceptor: called.");
                 Request request = chain.request();
-
                 // prevent caching when network is on. For that we use the "networkInterceptor"
                 if (!MyApplication.hasNetwork()) {
                     CacheControl cacheControl = new CacheControl.Builder()
@@ -100,8 +98,6 @@ public class ApiClient {
         return new Interceptor() {
             @Override
             public Response intercept(Chain chain) throws IOException {
-                //Log.d(TAG, "network interceptor: called.");
-
                 Response response = chain.proceed(chain.request());
 
                 CacheControl cacheControl = new CacheControl.Builder()
@@ -122,7 +118,6 @@ public class ApiClient {
                 new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                     @Override
                     public void log(String message) {
-                        //Log.d(TAG, "log: http log: " + message);
                     }
                 });
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

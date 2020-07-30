@@ -49,11 +49,7 @@ public class LoginActivity extends AppCompatActivity {
             a.addCategory(Intent.CATEGORY_HOME);
             a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(a);
-        }// else if (count == 2) {
-//            getSupportFragmentManager().beginTransaction().replace(R.id.activity_login_fragment_container,
-//                    loginFragment).commit();
-//        }
-        else {
+        } else {
             getSupportFragmentManager().popBackStack();
         }
     }

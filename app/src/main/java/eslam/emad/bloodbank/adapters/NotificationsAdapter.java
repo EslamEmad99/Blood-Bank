@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.emad.bloodbank.R;
+
 import eslam.emad.bloodbank.data.models.notification.NotificationData;
 
 public class NotificationsAdapter extends PagedListAdapter<NotificationData, NotificationsAdapter.NotificationsViewHolder> {
@@ -38,8 +39,7 @@ public class NotificationsAdapter extends PagedListAdapter<NotificationData, Not
     @Override
     public NotificationsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mCtx).inflate(R.layout.example_notification, parent, false);
-        NotificationsAdapter.NotificationsViewHolder evh = new NotificationsAdapter.NotificationsViewHolder(view, mListener);
-        return evh;
+        return new NotificationsViewHolder(view, mListener);
     }
 
     @Override
@@ -47,14 +47,16 @@ public class NotificationsAdapter extends PagedListAdapter<NotificationData, Not
 
         NotificationData currentPost = getItem(position);
 
-        if (currentPost.getUpdatedAt() != null) {
-            holder.notificationDate.setText(currentPost.getUpdatedAt());
-        }
-        holder.notificationText.setText(currentPost.getTitle());
-        if (currentPost.getPivot().getIsRead().equals("0")){
-            holder.notificationAlarm.setImageResource(R.drawable.ic_notification_none);
-        }else {
-            holder.notificationAlarm.setImageResource(R.drawable.ic_notification);
+        if (currentPost != null) {
+            if (currentPost.getUpdatedAt() != null) {
+                holder.notificationDate.setText(currentPost.getUpdatedAt());
+            }
+            holder.notificationText.setText(currentPost.getTitle());
+            if (currentPost.getPivot().getIsRead().equals("0")) {
+                holder.notificationAlarm.setImageResource(R.drawable.ic_notification_none);
+            } else {
+                holder.notificationAlarm.setImageResource(R.drawable.ic_notification);
+            }
         }
     }
 

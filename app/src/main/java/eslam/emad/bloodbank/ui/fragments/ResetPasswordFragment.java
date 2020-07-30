@@ -63,22 +63,6 @@ public class ResetPasswordFragment extends Fragment {
             Toast.makeText(getContext(), "Wrong phone number", Toast.LENGTH_SHORT).show();
         } else {
             viewModel.setOnResetPassword(phoneNumber);
-//            ApiClient.getINSTANCE().onResetPassword(phoneNumber).enqueue(new Callback<ResetPasswordModel>() {
-//                @Override
-//                public void onResponse(Call<ResetPasswordModel> call, Response<ResetPasswordModel> response) {
-//                    Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
-//                    if (response.body().getStatus() == 1) {
-//                        SharedPreferencesManger.getINSTANCE(getContext()).saveIntegerValue("pin_code", response.body().getResetPasswordData().getPinCodeForTest());
-//                        SharedPreferencesManger.getINSTANCE(getContext()).saveStringValue("phone", phoneNumber);
-//                        goToNewPasswordFragment();
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<ResetPasswordModel> call, Throwable t) {
-//                    Toast.makeText(getContext(), "ERROR connection!", Toast.LENGTH_SHORT).show();
-//                }
-//            });
         }
     }
 

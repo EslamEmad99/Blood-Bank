@@ -65,6 +65,9 @@ public class CreateDonationRequestActivity extends AppCompatActivity {
     private ArrayList<BloodTypeData> bloodTypesList;
     private ArrayList<GovernateData> governatesList;
     private ArrayList<CityData> citysList;
+    private ArrayAdapter<BloodTypeData> bloodTypeAdapter;
+    private ArrayAdapter<GovernateData> governateAdapter;
+    private ArrayAdapter<CityData> cityAdapter;
     private String apiToken, name, age, bloodTypeId, bagsNum, hospitalName, hospitalAddress, cityId, phone, notes, latitude, longitude;
     ApplicationViewModel viewModel;
 
@@ -80,8 +83,6 @@ public class CreateDonationRequestActivity extends AppCompatActivity {
         bloodTypesList = new ArrayList<>();
         governatesList = new ArrayList<>();
         citysList = new ArrayList<>();
-        bloodTypesList.add(new BloodTypeData(0, "فصيلة الدم"));
-        governatesList.add(new GovernateData(0, "المحافظة"));
         citysList.add(new CityData(0, "اختر المحافظة اولا"));
 
         viewModel.setBloodType();
@@ -89,7 +90,10 @@ public class CreateDonationRequestActivity extends AppCompatActivity {
             @Override
             public void onChanged(BloodTypeModel bloodTypeModel) {
                 if (bloodTypeModel.getStatus() == 1) {
+                    bloodTypesList.clear();
+                    bloodTypesList.add(new BloodTypeData(0, "فصيلة الدم"));
                     bloodTypesList.addAll(bloodTypeModel.getData());
+                    bloodTypeAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -99,21 +103,23 @@ public class CreateDonationRequestActivity extends AppCompatActivity {
             @Override
             public void onChanged(GovernateModel governateModel) {
                 if (governateModel.getStatus() == 1) {
+                    governatesList.clear();
+                    governatesList.add(new GovernateData(0, "المحافظة"));
                     governatesList.addAll(governateModel.getData());
-                    Toast.makeText(CreateDonationRequestActivity.this, "Toast", Toast.LENGTH_SHORT).show();
+                    governateAdapter.notifyDataSetChanged();
                 }
             }
         });
 
-        final ArrayAdapter<BloodTypeData> bloodTypeAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_layout, bloodTypesList);
+        bloodTypeAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_layout, bloodTypesList);
         bloodTypeAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         donationActivityBloodTypeSpinner.setAdapter(bloodTypeAdapter);
 
-        final ArrayAdapter<GovernateData> governateAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_layout, governatesList);
+        governateAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_layout, governatesList);
         governateAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         donationActivityGovernarateSpinner.setAdapter(governateAdapter);
 
-        final ArrayAdapter<CityData> cityAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_layout, citysList);
+        cityAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner_layout, citysList);
         cityAdapter.setDropDownViewResource(R.layout.custom_dropdown_list);
         donationActivityCitySpinner.setAdapter(cityAdapter);
 

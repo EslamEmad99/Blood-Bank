@@ -61,9 +61,6 @@ public class MoreScreen extends Fragment {
     @OnClick(R.id.fragment_more_screen_log_out_tv)
     public void onView6Clicked() {
         SharedPreferencesManger.getINSTANCE(getContext()).saveBooleanValue("is_remembered",false);
-//        LoginModel loginModel = new LoginModel();
-//        loginModel.setStatus(0);
-//        loginModel.setMsg("logged out");
         Repository.getINSTANCE().onloginModel.setValue(null);
         //remove notification token
         Intent intent = new Intent(getActivity(), LoginActivity.class);

@@ -57,6 +57,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onChanged(BloodTypeModel bloodTypeModel) {
                 if (bloodTypeModel.getStatus() == 1) {
+                    bloodTypeCheckBoxArrayList.clear();
                     for (int i = 0; i < bloodTypeModel.getData().size(); i++) {
                         bloodTypeCheckBoxArrayList.add(new ExampleCheckBox(bloodTypeModel.getData().get(i).getName(), bloodTypeModel.getData().get(i).getId()));
                         checkBoxAdapter.notifyDataSetChanged();
@@ -64,23 +65,6 @@ public class SettingsFragment extends Fragment {
                 }
             }
         });
-//        ApiClient.getINSTANCE().getBloodType().enqueue(new Callback<BloodTypeModel>() {
-//            @Override
-//            public void onResponse(Call<BloodTypeModel> call, Response<BloodTypeModel> response) {
-//                if (response.body().getStatus() == 1) {
-//                    for (int i = 0; i < response.body().getData().size(); i++) {
-//                        bloodTypeCheckBoxArrayList.add(new ExampleCheckBox(response.body().getData().get(i).getName(), response.body().getData().get(i).getId()));
-//                        checkBoxAdapter.notifyDataSetChanged();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<BloodTypeModel> call, Throwable t) {
-//
-//            }
-//        });
-
         RecyclerView bloodTypeRecyclerView = view.findViewById(R.id.fragment_settings_blood_type_recycler_view);
         bloodTypeRecyclerView.setHasFixedSize(true); //important
         bloodTypeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
@@ -107,6 +91,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onChanged(GovernateModel governateModel) {
                 if (governateModel.getStatus() == 1) {
+                    goernateCheckBoxArrayList.clear();
                     for (int i = 0; i < governateModel.getData().size(); i++) {
                         goernateCheckBoxArrayList.add(new ExampleCheckBox(governateModel.getData().get(i).getName(), governateModel.getData().get(i).getId()));
                         checkBoxAdapter.notifyDataSetChanged();
@@ -114,23 +99,6 @@ public class SettingsFragment extends Fragment {
                 }
             }
         });
-
-//        ApiClient.getINSTANCE().getGovernate().enqueue(new Callback<GovernateModel>() {
-//            @Override
-//            public void onResponse(Call<GovernateModel> call, Response<GovernateModel> response) {
-//                if (response.body().getStatus() == 1) {
-//                    for (int i = 0; i < response.body().getData().size(); i++) {
-//                        goernateCheckBoxArrayList.add(new ExampleCheckBox(response.body().getData().get(i).getName(), response.body().getData().get(i).getId()));
-//                        checkBoxAdapter.notifyDataSetChanged();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<GovernateModel> call, Throwable t) {
-//
-//            }
-//        });
 
         RecyclerView governateRecyclerView = view.findViewById(R.id.fragment_settings_governate_recycler_view);
         governateRecyclerView.setHasFixedSize(true); //important
@@ -164,25 +132,6 @@ public class SettingsFragment extends Fragment {
                 Toast.makeText(getContext(), content, Toast.LENGTH_SHORT).show();
             }
         });
-//        ApiClient.getINSTANCE().setNotificationSettings(
-//                Constants.API_TOKEN,
-//                governateArray,
-//                bloodTypeArray).enqueue(new Callback<NotificationSettingsModel>() {
-//            @Override
-//            public void onResponse(Call<NotificationSettingsModel> call, Response<NotificationSettingsModel> response) {
-//                String content = "";
-//                content += "MSG : " + response.body().getMsg() + "\n";
-//                content += "status " + response.body().getStatus().toString() + "\n";
-//                content += "governate " + response.body().getData().getGovernorates().toString() + "\n";
-//                content += "blood " + response.body().getData().getBloodTypes().toString() + "\n";
-//                Toast.makeText(getContext(), content, Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onFailure(Call<NotificationSettingsModel> call, Throwable t) {
-//                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
     }
 
     @OnClick(R.id.fragment_settings_back_btn)

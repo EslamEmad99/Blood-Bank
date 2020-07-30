@@ -37,8 +37,7 @@ public class DonationsAdapter extends PagedListAdapter<DonationData, DonationsAd
     @Override
     public DonationsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mCtx).inflate(R.layout.example_donation, parent, false);
-        DonationsAdapter.DonationsViewHolder evh = new DonationsAdapter.DonationsViewHolder(view, mListener);
-        return evh;
+        return new DonationsViewHolder(view, mListener);
     }
 
     @Override
@@ -68,17 +67,13 @@ public class DonationsAdapter extends PagedListAdapter<DonationData, DonationsAd
             };
 
     class DonationsViewHolder extends RecyclerView.ViewHolder {
-
         TextView nameTv, phoneTV, bloodTypeTV;
-
 
         public DonationsViewHolder(@NonNull View itemView, final DonationsAdapter.OnItemClickListener listener) {
             super(itemView);
-
             nameTv = itemView.findViewById(R.id.example_donation_name_tv);
             phoneTV = itemView.findViewById(R.id.example_donation_phone_tv);
             bloodTypeTV = itemView.findViewById(R.id.example_donation_blood_type_tv);
-
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

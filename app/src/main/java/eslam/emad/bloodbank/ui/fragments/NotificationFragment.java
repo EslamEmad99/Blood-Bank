@@ -64,26 +64,6 @@ public class NotificationFragment extends Fragment {
                 }
             }
         });
-
-//        ApiClient.getINSTANCE()
-//                .getNotifications(Constants.API_TOKEN, 0)
-//                .enqueue(new Callback<NotificationModel>() {
-//                    @Override
-//                    public void onResponse(Call<NotificationModel> call, Response<NotificationModel> response) {
-//                        if (response.body().getNotificationResponseData().getData().size() == 0) {
-//                            mRecyclerView.setVisibility(View.GONE);
-//                            imageView.setVisibility(View.VISIBLE);
-//                            textView.setVisibility(View.VISIBLE);
-//                            button.setVisibility(View.VISIBLE);
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<NotificationModel> call, Throwable t) {
-//
-//                    }
-//                });
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
 

@@ -5,11 +5,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.ToggleButton;
-
 import androidx.annotation.NonNull;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
@@ -44,8 +41,7 @@ public class ArticlesAdapter extends PagedListAdapter<PostData, ArticlesAdapter.
     @Override
     public ArticlesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mCtx).inflate(R.layout.example_post, parent, false);
-        ArticlesAdapter.ArticlesViewHolder evh = new ArticlesAdapter.ArticlesViewHolder(view, mListener);
-        return evh;
+        return new ArticlesViewHolder(view, mListener);
     }
 
     @Override

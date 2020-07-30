@@ -45,7 +45,7 @@ public class OnBoardingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // when this activity is about to be launch we need to check if its openened before or not
+        // when this activity is about to be launch we need to check if its opened before or not
         if (SharedPreferencesManger.getINSTANCE(getApplicationContext()).restoreBooleanValue("is_intro_opened")) {
             Intent mainActivity = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(mainActivity);
@@ -115,7 +115,7 @@ public class OnBoardingActivity extends AppCompatActivity {
             screenPager.setCurrentItem(position);
         }
         if (position == mList.size() - 1) { // when we rech to the last screen
-            //show the GETSTARTED Button and hide the indicator and the next button
+            //show the getStarted Button and hide the indicator and the next button
             loadLastScreen();
         }
     }

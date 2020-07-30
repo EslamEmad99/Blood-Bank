@@ -12,7 +12,6 @@ import com.emad.bloodbank.R;
 import eslam.emad.bloodbank.data.models.ExampleCheckBox;
 import java.util.ArrayList;
 
-
 public class CheckBoxAdapter extends RecyclerView.Adapter <CheckBoxAdapter.CheckBoxViewHolder> {
 
     private ArrayList<ExampleCheckBox> mExampleList;
@@ -55,8 +54,7 @@ public class CheckBoxAdapter extends RecyclerView.Adapter <CheckBoxAdapter.Check
     @Override
     public CheckBoxViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.example_check_box,parent,false);
-        CheckBoxViewHolder evh = new CheckBoxViewHolder(view, mListener);
-        return evh;
+        return new CheckBoxViewHolder(view, mListener);
     }
 
     @Override

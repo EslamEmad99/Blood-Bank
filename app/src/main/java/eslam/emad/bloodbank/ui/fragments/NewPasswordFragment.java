@@ -104,20 +104,6 @@ public class NewPasswordFragment extends Fragment {
             Toast.makeText(getContext(), "Password must be bigger than 4 digits", Toast.LENGTH_SHORT).show();
         } else {
             viewModel.setOnNewPassword(password, passwordConfirmation, pinCode, phone);
-//            ApiClient.getINSTANCE().onNewPassword(password, passwordConfirmation, pinCode, phone).enqueue(new Callback<NewPasswordModel>() {
-//                @Override
-//                public void onResponse(Call<NewPasswordModel> call, Response<NewPasswordModel> response) {
-//                    Toast.makeText(getContext(), response.body().getMsg(), Toast.LENGTH_LONG).show();
-//                    if (response.body().getStatus() == 1) {
-//                        goToLoginFragment();
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<NewPasswordModel> call, Throwable t) {
-//                    Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
-//                }
-//            });
         }
     }
 }

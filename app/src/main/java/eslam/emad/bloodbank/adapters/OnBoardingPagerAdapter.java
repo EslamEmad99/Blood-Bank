@@ -33,25 +33,17 @@ public class OnBoardingPagerAdapter extends PagerAdapter {
         this.mListScreen = mListScreen;
     }
 
-
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layoutScreen = inflater.inflate(R.layout.screen_on_boarding, null);
         ButterKnife.bind(this ,layoutScreen);
-
-//        ImageView imgSlide = layoutScreen.findViewById(R.id.screen_on_boarding_imgv);
-//        TextView description = layoutScreen.findViewById(R.id.screen_on_boarding_tv);
-
         assert description != null;
         description.setText(mListScreen.get(position).getDescription());
         assert imgSlide != null;
         imgSlide.setImageResource(mListScreen.get(position).getScreenImg());
-
         container.addView(layoutScreen);
-
         return layoutScreen;
     }
 
@@ -67,8 +59,6 @@ public class OnBoardingPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-
         container.removeView((View) object);
-
     }
 }
